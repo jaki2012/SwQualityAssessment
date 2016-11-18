@@ -28,10 +28,10 @@ public class Client {
             session.beginTransaction();
             Task task = new Task();
             task.setProjectName("Spring MVC");
-            task.setProjectVersion("2.1");
+            task.setProjectVersion("2.2");
             task.setStartTime(new Date());
             task.setEndTime(new Date());
-            task.setTaskState(2);
+            task.setTaskState(1);
 
 
             //保存User对象

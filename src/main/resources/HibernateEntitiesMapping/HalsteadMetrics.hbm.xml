@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.tongji409.domain.HalsteadMetrics">
+        <id name="swMetricsIndex">
+            <generator class="native"/>
+        </id>
+        <property name="moduleID"/>
+        <property name="BRANCH_COUNT"/>
+        <property name="CALL_PAIRS"/>
+        <property name="PARAMETER_COUNT"/>
+        <property name="HALSTEAD_CONTENT"/>
+        <property name="HALSTEAD_DIFFICULTY"/>
+        <property name="HALSTEAD_EFFORT"/>
+        <property name="HALSTEAD_EFFORT_EST"/>
+        <property name="HALSETAD_LENGTH"/>
+        <property name="HALSTEAD_LEVEL"/>
+        <property name="HALSTEAD_PROG_TIME"/>
+        <property name="HASTEAD_VOLUME"/>
+        <property name="NUM_OPERANDS"/>
+        <property name="NUM_OPERATORS"/>
+        <property name="NUM_UNIQUE_OPERANDS"/>
+        <property name="NUM_UNIQUE_OPERATORS"/>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.tongji409.domain.LOCMetrics">
+        <id name="swMetricsIndex">
+            <generator class="native"/>
+        </id>
+        <property name="moduleID"/>
+        <property name="LOC_BLANK"/>
+        <property name="LOC_CODE_AND_COMMENT"/>
+        <property name="LOC_COMMENTS"/>
+        <property name="LOC_EXECUTABLE"/>
+        <property name="NUMBER_OF_LINES"/>
+        <property name="PERCENT_COMMENTS"/>
+        <property name="LOC_TOTAL"/>
+    </class>
+</hibernate-mapping>

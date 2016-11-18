@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.tongji409.domain.McCabeMetrics">
+        <id name="swMetricsIndex">
+            <generator class="native"/>
+        </id>
+        <property name="moduleID"/>
+        <property name="CONDITION_COUNT"/>
+        <property name="CYCLOMATIC_COMPLEXITY"/>
+        <property name="CYCLOMATIC_DENSITY"/>
+        <property name="DECISION_COUNT"/>
+        <property name="DECISION_DENSITY"/>
+        <property name="DESIGN_COMPLEXITY"/>
+        <property name="DECISION_DENSITY"/>
+        <property name="EDGE_COUNT"/>
+        <property name="ESSENTIAL_COMPLEXITY"/>
+        <property name="ESSENTIAL_DENSITY"/>
+        <property name="GLOBAL_DATA_COMPLEXITY"/>
+        <property name="GLOBAL_DATA_DENSITY"/>
+        <property name="MAINTENANCE_SEVERITY"/>
+        <property name="MODIFIED_CONDITION_COUNT"/>
+        <property name="MULTIPLE_CONDITION_COUNT"/>
+        <property name="NODE_COUNT"/>
+        <property name="NORMALIZED_CYCLOMATIC_COMPLEXITY"/>
+    </class>
+</hibernate-mapping>

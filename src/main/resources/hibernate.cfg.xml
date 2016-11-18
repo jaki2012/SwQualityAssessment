@@ -9,10 +9,11 @@
         <!--数据库账号密码-->
         <property name="hibernate.connection.username">root</property>
         <property name="hibernate.connection.password">1234</property>
+        <!--数据库方言-->
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
         <!--自动创建或者更改数据库里面的表或者表的内容结构-->
         <property name="hibernate.hbm2ddl.auto">update</property>
         <property name="show_sql">true</property>
-        <mapping resource="Task.hbm.xml" />
+        <mapping resource="HibernateEntitiesMapping/Task.hbm.xml" />
     </session-factory>
 </hibernate-configuration>

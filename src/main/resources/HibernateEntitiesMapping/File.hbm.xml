@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.tongji409.domain.File">
+        <id name="fileID">
+            <generator class="native"/>
+        </id>
+        <property name="taskID"/>
+        <property name="fileName"/>
+        <property name="fileType"/>
+        <property name="fileCoding"/>
+        <property name="filePath"/>
+    </class>
+</hibernate-mapping>

@@ -13,7 +13,49 @@ public class Module {
     private String moduleName;
 
     //机器学习预测缺陷的结果
-    private String MLPredictedResult;
+    private boolean defective;
 
+    //备用项
     private String spareItem;
+
+    public int getModuleID() {
+        return moduleID;
+    }
+
+    public void setModuleID(int moduleID) {
+        this.moduleID = moduleID;
+    }
+
+    public int getFileID() {
+        return fileID;
+    }
+
+    public void setFileID(int fileID) {
+        this.fileID = fileID;
+    }
+
+    public String getModuleName() {
+        return moduleName;
+    }
+
+    public void setModuleName(String moduleName) {
+        this.moduleName = moduleName;
+    }
+
+    public boolean isDefective() {
+        return defective;
+    }
+
+    public void setDefective(boolean defective) {
+        this.defective = defective;
+    }
+
+    public String getSpareItem() {
+        return spareItem;
+    }
+
+    public void setSpareItem(String spareItem) {
+        this.spareItem = spareItem;
+    }
+
 }

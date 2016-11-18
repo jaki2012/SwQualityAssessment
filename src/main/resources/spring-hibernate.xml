@@ -31,7 +31,7 @@
         
         <property name="mappingResources">
             <list>
-                <value>Task.hbm.xml</value>
+                <value>HibernateEntitiesMapping/Task.hbm.xml</value>
             </list>
         </property>
         <property name="hibernateProperties">
