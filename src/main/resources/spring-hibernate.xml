@@ -28,10 +28,16 @@
                 <value>com.tongji409.domain</value>
             </list>
         </property>
-        
+
+        <!--hibernate与实体类的映射文件-->
         <property name="mappingResources">
             <list>
                 <value>HibernateEntitiesMapping/Task.hbm.xml</value>
+                <value>HibernateEntitiesMapping/File.hbm.xml</value>
+                <value>HibernateEntitiesMapping/Module.hbm.xml</value>
+                <value>HibernateEntitiesMapping/LOCMetrics.hbm.xml</value>
+                <value>HibernateEntitiesMapping/HalsteadMetrics.hbm.xml</value>
+                <value>HibernateEntitiesMapping/McCabeMetrics.hbm.xml</value>
             </list>
         </property>
         <property name="hibernateProperties">

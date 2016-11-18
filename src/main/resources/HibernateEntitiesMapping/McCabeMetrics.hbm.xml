@@ -14,7 +14,7 @@
         <property name="DECISION_COUNT"/>
         <property name="DECISION_DENSITY"/>
         <property name="DESIGN_COMPLEXITY"/>
-        <property name="DECISION_DENSITY"/>
+        <property name="DESIGN_DENSITY"/>
         <property name="EDGE_COUNT"/>
         <property name="ESSENTIAL_COMPLEXITY"/>
         <property name="ESSENTIAL_DENSITY"/>

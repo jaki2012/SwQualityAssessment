@@ -20,7 +20,7 @@
 
 
     <servlet>
-        <servlet-name>HelloWeb</servlet-name>
+        <servlet-name>SwQualityAssesment</servlet-name>
         <servlet-class>
             org.springframework.web.servlet.DispatcherServlet
         </servlet-class>
@@ -28,7 +28,7 @@
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>HelloWeb</servlet-name>
+        <servlet-name>SwQualityAssesment</servlet-name>
         <url-pattern>/</url-pattern>
     </servlet-mapping>
 

@@ -16,3 +16,6 @@ hs_err_pid*
 
 # itellij IDEA iml File
 *.iml
+
+# compiled File
+target/*
