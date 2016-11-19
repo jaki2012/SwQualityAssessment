@@ -110,6 +110,13 @@
             <version>5.1.30</version>
         </dependency>
 
+        <!-- mongoDB -->
+        <dependency>
+            <groupId>org.mongodb</groupId>
+            <artifactId>mongo-java-driver</artifactId>
+            <version>3.2.1</version>
+        </dependency>
+
         <!-- Hibernate 5 -->
         <dependency>
             <groupId>org.hibernate</groupId>
@@ -191,7 +198,13 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.6.1</version>
+            <version>${slf4j.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>${slf4j.version}</version>
         </dependency>
         <dependency>
             <groupId>org.hibernate.javax.persistence</groupId>
@@ -206,9 +219,43 @@
             <version>7.0.35</version>
         </dependency>
 
+        <!--alibaba fastjson-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.1.41</version>
+        </dependency>
+
+        <!-- 日志文件管理包 -->
+        <!-- log start -->
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>${log4j.version}</version>
+        </dependency>
+
+        <!-- Base64加密类 -->
+        <!-- https://mvnrepository.com/artifact/com.adobe.xmp/xmpcore -->
+        <dependency>
+            <groupId>com.adobe.xmp</groupId>
+            <artifactId>xmpcore</artifactId>
+            <version>5.1.2</version>
+        </dependency>
+
+
     </dependencies>
 
     <build>
         <finalName>SwQualityAssesment</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 </project>
