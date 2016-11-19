@@ -292,7 +292,7 @@ public class DLogger {
             String clazz = Thread.currentThread() .getStackTrace()[3].getClassName();
             String method = Thread.currentThread() .getStackTrace()[3].getMethodName();
 
-            Document log = new  Document()
+            final Document log = new  Document()
                     .append(SysLogModel.LOG_OPID, this.id)
                     .append(SysLogModel.LOG_OPSTEP, step)
                     .append(SysLogModel.LOG_LEVEL, level)
