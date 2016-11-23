@@ -3,17 +3,12 @@ package com.tongji409.website.web;
 /**
  * Created by lijiechu on 16/11/15.
  */
-import com.alibaba.fastjson.JSONObject;
+import com.tongji409.domain.Task;
 import com.tongji409.util.log.DLogger;
 import com.tongji409.website.services.TaskService;
-import com.tongji409.website.services.support.ServiceInterface;
 import com.tongji409.website.web.Support.BaseDispatcher;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
@@ -47,12 +42,24 @@ public class TaskController extends BaseDispatcher{
 //    }
 
     //@PathVariable(value="id") Integer id
-    @RequestMapping(value = "/task/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/task/{id}", method = RequestMethod.GET)
     public @ResponseBody String addTask(@PathVariable(value="id") Integer id) {
+
         //TaskService service= new TaskService(log, "/task", this.requestjson);
         taskService.setFuncname("/task");
         taskService.setLog(log);
         taskService.addTask(id);
         return taskService.getResultJson();
+    }
+
+    @RequestMapping(value = "/task", method = RequestMethod.POST)
+    public @ResponseBody String addTaskPost(@ModelAttribute("task")Task task) {
+        taskService.addTask(task);
+        return taskService.getResultJson();
+    }
+
+    @RequestMapping(value = "/tasks")
+    public @ResponseBody String showAllTask() {
+        return taskService.getAllTasks();
     }
 }

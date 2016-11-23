@@ -1,13 +1,11 @@
 package com.tongji409.website.services;
 
-import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.tongji409.domain.Task;
 import com.tongji409.util.log.DLogger;
 import com.tongji409.website.dao.TaskDao;
 import com.tongji409.website.services.support.ServiceSupport;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import javax.annotation.Resource;
 
 /**
  * Created by lijiechu on 16/11/15.
@@ -42,8 +40,24 @@ public class TaskService extends ServiceSupport{
             taskDao.addTask();
             this.packageResultJson();
         } catch (Exception e) {
-            log.error("插入图片索引信息", e);
-            this.packageError("插入图片索引信息失败！\n原因：" + e.getMessage());
+            log.error("添加任务", e);
+
+            packageError("添加任务失败！\n原因:" + e.getMessage());
+        }
+    }
+
+    public String getAllTasks() {
+        return JSONArray.toJSONString(taskDao.getAllTasks());
+    }
+
+    public void addTask(Task task) {
+        try {
+            taskDao.addTask(task);
+            packageResultJson();
+        } catch (Exception e) {
+            log.error("添加任务", e);
+
+            packageError("添加任务失败！\n原因:" + e.getMessage());
         }
     }
 
@@ -52,8 +66,9 @@ public class TaskService extends ServiceSupport{
             taskDao.addTask(id);
             this.packageResultJson();
         } catch (Exception e) {
-            log.error("插入图片索引信息", e);
-            this.packageError("插入图片索引信息失败！\n原因：" + e.getMessage());
+            log.error("添加任务", e);
+
+            packageError("添加任务失败！\n原因:" + e.getMessage());
         }
     }
 
