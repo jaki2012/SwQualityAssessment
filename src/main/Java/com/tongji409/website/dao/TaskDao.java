@@ -61,7 +61,7 @@ public class TaskDao extends BaseDao {
         try {
             Session session = sessionFactory.getCurrentSession();
 
-            Query query = session.createQuery("from Task where 1=1");
+            Query query = session.createQuery("from Task");
             List<Task> tasks = query.list();
             for (Task task : tasks) {
                 System.out.println(task.getTaskID() + " State:" + task.getTaskState());
