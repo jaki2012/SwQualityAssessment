@@ -44,7 +44,6 @@ public class TaskController extends BaseDispatcher{
     //@PathVariable(value="id") Integer id
     @RequestMapping(value = "/task/{id}", method = RequestMethod.GET)
     public @ResponseBody String addTask(@PathVariable(value="id") Integer id) {
-
         //TaskService service= new TaskService(log, "/task", this.requestjson);
         taskService.setFuncname("/task");
         taskService.setLog(log);
