@@ -76,9 +76,9 @@ public class TaskDao extends BaseDao {
     public void addTask(Task task) {
         if (null == task)
             return;
-        Session session = sessionFactory.getCurrentSession();
+        Session session = null;
         try {
-
+            session = sessionFactory.getCurrentSession();
             session.save(task);
         } catch (Exception e) {
             e.printStackTrace();
@@ -96,7 +96,7 @@ public class TaskDao extends BaseDao {
             task.setProjectName("Task Scanner");
             task.setProjectVersion("3.0");
             task.setStartTime(new Date());
-            task.setEndTime(new Date());
+            //task.setEndTime(new Date());
             task.setTaskState(i);
 
 

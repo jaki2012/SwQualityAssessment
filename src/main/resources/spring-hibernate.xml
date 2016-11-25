@@ -85,6 +85,9 @@
         <tx:attributes>
             <tx:method name="add*" propagation="REQUIRED" />
             <tx:method name="get*" propagation="REQUIRED" />
+            <!--service层封装事务,每个方法都需要符合此处method的命名规则-->
+            <tx:method name="start*" propagation="REQUIRED"/>
+            <!--<tx:method name="start*" propagation="REQUIRED" read-only="false" rollback-for="java.lang.Exception" />-->
             <tx:method name="*" read-only="true" />
         </tx:attributes>
     </tx:advice>
