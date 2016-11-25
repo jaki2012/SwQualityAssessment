@@ -7,6 +7,8 @@ import com.tongji409.util.log.DLogger;
 import com.tongji409.website.dao.TaskDao;
 import com.tongji409.website.services.support.ServiceSupport;
 
+import java.util.Date;
+
 /**
  * Created by lijiechu on 16/11/15.
  */
@@ -70,6 +72,46 @@ public class TaskService extends ServiceSupport{
 
             packageError("添加任务失败！\n原因:" + e.getMessage());
         }
+    }
+
+    public void startTask(String projectName, String projectVersion, String projectPath){
+
+        Task newTask = new Task();
+        newTask.setStartTime(new Date());
+        newTask.setTaskState(1);
+        newTask.setProjectName(projectName);
+        newTask.setProjectVersion(projectVersion);
+
+        try {
+            //向数据库添加新启动的作业
+            taskDao.addTask(newTask);
+            this.packageResultJson();
+        } catch (Exception e) {
+            log.error("创建任务", e);
+
+            packageError("创建任务失败！\n原因:" + e.getMessage());
+        }
+
+        //此处启用线程异步处理代码分析工作
+        //...
+        //分析完成后修改TASK记录 设置endTime taskState
+
+    }
+
+    public void startTask(Task newTask){
+        newTask.setStartTime(new Date());
+        newTask.setTaskState(1);
+
+        try {
+            //向数据库添加新启动的作业
+            taskDao.addTask(newTask);
+            this.packageResultJson();
+        } catch (Exception e) {
+            log.error("创建任务", e);
+
+            packageError("创建任务失败！\n原因:" + e.getMessage());
+        }
+
     }
 
     public void setTaskDao(TaskDao taskDao) {
