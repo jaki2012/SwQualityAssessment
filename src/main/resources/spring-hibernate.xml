@@ -53,7 +53,7 @@
     </bean>
 
     <bean id="taskDao" class="com.tongji409.website.dao.TaskDao">
-        <property name="sessionFactory" ref="sessionFactory"></property>
+        <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     <bean id="taskService" class="com.tongji409.website.services.TaskService">
         <property name="taskDao" ref="taskDao"/>

@@ -16,15 +16,15 @@ import java.util.List;
 public class TaskDao extends BaseDao {
 
 
-    public List<Task> getAllUser(){
-        String hsql="from Task";
+    public List<Task> getAllUser() {
+        String hsql = "from Task";
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery(hsql);
 
         return query.list();
     }
 
-    public void addTask(){
+    public void addTask() {
         Session session = null;
         try {
             session = sessionFactory.getCurrentSession();
@@ -42,12 +42,12 @@ public class TaskDao extends BaseDao {
             session.save(task);
 
             //提交事务
-          //  session.getTransaction().commit();
-        }catch(Exception e) {
+            //  session.getTransaction().commit();
+        } catch (Exception e) {
             e.printStackTrace();
             //回滚事务
             session.getTransaction().rollback();
-        }finally {
+        } finally {
 //            if (session != null) {
 //                if (session.isOpen()) {
 //                    //关闭session
@@ -57,7 +57,36 @@ public class TaskDao extends BaseDao {
         }
     }
 
-    public void addTask(int i){
+    public List<Task> getAllTasks() {
+        try {
+            Session session = sessionFactory.getCurrentSession();
+
+            Query query = session.createQuery("from Task");
+            List<Task> tasks = query.list();
+            for (Task task : tasks) {
+                System.out.println(task.getTaskID() + " State:" + task.getTaskState());
+            }
+            return tasks;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public void addTask(Task task) {
+        if (null == task)
+            return;
+        Session session = sessionFactory.getCurrentSession();
+        try {
+
+            session.save(task);
+        } catch (Exception e) {
+            e.printStackTrace();
+            session.getTransaction().rollback();
+        }
+    }
+
+    public void addTask(int i) {
         Session session = null;
         try {
             session = sessionFactory.getCurrentSession();
@@ -76,11 +105,11 @@ public class TaskDao extends BaseDao {
 
             //提交事务
             //  session.getTransaction().commit();
-        }catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             //回滚事务
             session.getTransaction().rollback();
-        }finally {
+        } finally {
 //            if (session != null) {
 //                if (session.isOpen()) {
 //                    //关闭session
