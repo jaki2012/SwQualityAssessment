@@ -56,7 +56,9 @@ public abstract class BaseDispatcher {
 
             // 处理log对象
             this.log.setRequestdata(this.requestjson);
-            this.log.setFunc(url.substring(url.lastIndexOf("/") + 1));
+            String logFunc = url.substring(url.lastIndexOf("/") + 1);
+            logFunc += "(Method="+request.getMethod()+")";
+            this.log.setFunc(logFunc);
             this.log.setUser(dl_userid);
 
             this.log.start();

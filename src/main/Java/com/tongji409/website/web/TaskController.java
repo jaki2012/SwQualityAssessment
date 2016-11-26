@@ -3,20 +3,20 @@ package com.tongji409.website.web;
 /**
  * Created by lijiechu on 16/11/15.
  */
-import com.tongji409.domain.StaticDefect;
 import com.tongji409.domain.Task;
 import com.tongji409.util.log.DLogger;
 import com.tongji409.website.services.StaticDefectService;
 import com.tongji409.website.services.TaskService;
 import com.tongji409.website.web.Support.BaseDispatcher;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
-import java.io.IOException;
 
 @Controller
+@Scope("prototype")
 @RequestMapping("/task")
 public class TaskController extends BaseDispatcher{
 
@@ -25,8 +25,6 @@ public class TaskController extends BaseDispatcher{
 
     @Resource(name = "staticDefectService")
     private StaticDefectService staticDefectService;
-
-    DLogger log = DLogger.getDLogger(this.getClass());
 
     @RequestMapping(value = "/manager", method = RequestMethod.GET)
     public ModelAndView hello2() {
@@ -75,7 +73,7 @@ public class TaskController extends BaseDispatcher{
                                           @PathVariable(value = "path") String projectPath){
         taskService.setFuncname("/startTask");
         //Remember to add , otherwise JavaNullPointerException
-        taskService.setLog(log);
+        taskService.setLog(this.log);
         taskService.startTask(projectName,projectVersion,projectPath);
         return taskService.getResultJson();
     }
@@ -84,7 +82,7 @@ public class TaskController extends BaseDispatcher{
     @RequestMapping(value = "/task", method = RequestMethod.POST)
     public @ResponseBody String startTask(@RequestBody Task newTask) {
         taskService.setFuncname("/startTask");
-        taskService.setLog(log);
+        taskService.setLog(this.log);
         taskService.startTask(newTask);
 
         return taskService.getResultJson();
