@@ -1,7 +1,10 @@
 package com.tongji409.website.services;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
  * Project: SwQualityAssesment
@@ -9,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
  * Author:  Novemser
  * 2016/11/24
  */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = TaskService.class)
 public class TaskServiceTest {
 
     @Autowired
@@ -16,7 +21,7 @@ public class TaskServiceTest {
 
     @Test
     public void addTask() throws Exception {
-
+        taskService.addTask();
     }
 
     @Test
