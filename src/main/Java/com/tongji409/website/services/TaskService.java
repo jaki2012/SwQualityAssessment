@@ -2,11 +2,17 @@ package com.tongji409.website.services;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.tongji409.domain.StaticDefect;
 import com.tongji409.domain.Task;
+import com.tongji409.util.config.StaticConstant;
 import com.tongji409.util.log.DLogger;
+import com.tongji409.website.dao.StaticDefectDao;
 import com.tongji409.website.dao.TaskDao;
 import com.tongji409.website.services.support.ServiceSupport;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Date;
 
 /**
@@ -16,6 +22,7 @@ import java.util.Date;
 public class TaskService extends ServiceSupport{
 
     private TaskDao taskDao;
+    private StaticDefectDao staticDefectDao;
 
     public TaskService(){
 
@@ -101,10 +108,12 @@ public class TaskService extends ServiceSupport{
     public void startTask(Task newTask){
         newTask.setStartTime(new Date());
         newTask.setTaskState(1);
-
         try {
             //向数据库添加新启动的作业
             taskDao.addTask(newTask);
+            //分析PMD缺陷,
+            //注释这行代码 如果你本机缺少PMD-JAR运行环境
+            analysePMDDefects(newTask);
             this.packageResultJson();
         } catch (Exception e) {
             log.error("创建任务", e);
@@ -114,11 +123,42 @@ public class TaskService extends ServiceSupport{
 
     }
 
+    public void analysePMDDefects(Task task) throws IOException {
+
+        String path = task.getPath();
+        String output;
+        int moduleID = 0;
+        String [] analyseResult;
+        String command = StaticConstant.PMD_JAR_PATH + " pmd -d " + path + " -f text -R" +" " +
+                StaticConstant.PMD_JAVA_RULESETS_PATH+"basic.xml";
+        Process process = Runtime.getRuntime().exec(command);
+        //Process process = Runtime.getRuntime().exec(" pmd -d /Users/lijiechu/Downloads/FileManager.java -f text -R /Users/lijiechu/Documents/pmd/pmd-java/target/classes/rulesets/java/comments.xml");
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+        while((output = bufferedReader.readLine())!=null){
+            analyseResult = output.split(":");
+            StaticDefect staticDefect = new StaticDefect();
+            staticDefect.setModuleID(moduleID++);
+            staticDefect.setLocation(analyseResult[1]);
+            staticDefect.setDescription(analyseResult[2].trim());
+            staticDefectDao.addStaticDefect(staticDefect);
+            System.out.println(output);
+        }
+    }
+
+
     public void setTaskDao(TaskDao taskDao) {
         this.taskDao = taskDao;
     }
 
     public TaskDao getTaskDao() {
         return taskDao;
+    }
+
+    public StaticDefectDao getStaticDefectDao() {
+        return staticDefectDao;
+    }
+
+    public void setStaticDefectDao(StaticDefectDao staticDefectDao) {
+        this.staticDefectDao = staticDefectDao;
     }
 }

@@ -16,6 +16,8 @@ public class Task {
     private Date startTime;
     //作业结束时间
     private Date endTime;
+    //代码托管的路径
+    private String path;
 
     private int taskState;
 
@@ -57,6 +59,14 @@ public class Task {
 
     public void setEndTime(Date endTime) {
         this.endTime = endTime;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
     }
 
     public int getTaskState() {

@@ -4,7 +4,6 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:tx="http://www.springframework.org/schema/tx"
        xmlns:aop="http://www.springframework.org/schema/aop"
-       xmlns:mvc="http://www.springframework.org/schema/mvc"
        xsi:schemaLocation="
         http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
@@ -40,6 +39,7 @@
                 <value>HibernateEntitiesMapping/LOCMetrics.hbm.xml</value>
                 <value>HibernateEntitiesMapping/HalsteadMetrics.hbm.xml</value>
                 <value>HibernateEntitiesMapping/McCabeMetrics.hbm.xml</value>
+                <value>HibernateEntitiesMapping/StaticDefect.hbm.xml</value>
             </list>
         </property>
         <property name="hibernateProperties">
@@ -55,8 +55,17 @@
     <bean id="taskDao" class="com.tongji409.website.dao.TaskDao">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
+
     <bean id="taskService" class="com.tongji409.website.services.TaskService">
         <property name="taskDao" ref="taskDao"/>
+        <property name="staticDefectDao" ref="staticDefectDao"/>
+    </bean>
+
+    <bean id="staticDefectDao" class="com.tongji409.website.dao.StaticDefectDao">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="staticDefectService" class="com.tongji409.website.services.StaticDefectService">
+        <property name="staticDefectDao" ref="staticDefectDao"/>
     </bean>
 
     <!-- 数据库映射 -->
@@ -87,6 +96,7 @@
             <!--service层封装事务,每个方法都需要符合此处method的命名规则-->
             <tx:method name="start*" propagation="REQUIRED"/>
             <!--<tx:method name="start*" propagation="REQUIRED" read-only="false" rollback-for="java.lang.Exception" />-->
+            <tx:method name="analyse*" propagation="REQUIRED"/>
             <tx:method name="*" read-only="true" />
         </tx:attributes>
     </tx:advice>

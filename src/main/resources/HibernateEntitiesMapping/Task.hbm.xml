@@ -11,6 +11,7 @@
         <property name="projectVersion"/>
         <property name="startTime"/>
         <property name="endTime"/>
+        <property name="path"/>
         <property name="taskState"/>
     </class>
 </hibernate-mapping>

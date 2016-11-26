@@ -88,8 +88,6 @@ public class StaticConstant {
     public static final int SYS_STATE_UNEFF = 99; // 删除
 
     /******************************基本数据BEGIN***************************************/
-
-
-
-
+    public static final String PMD_JAR_PATH = "/Users/lijiechu/Documents/pmd-bin/pmd-bin-5.6.0-SNAPSHOT/bin/run.sh";
+    public static final String PMD_JAVA_RULESETS_PATH = "/Users/lijiechu/Documents/pmd/pmd-java/target/classes/rulesets/java/";
 }
