@@ -46,14 +46,14 @@ public class TaskController extends BaseDispatcher{
 //    }
 
     //@PathVariable(value="id") Integer id
-    @RequestMapping(value = "/task/{id}", method = RequestMethod.POST)
-    public @ResponseBody String addTask(@PathVariable(value="id") Integer id) {
-        //TaskService service= new TaskService(log, "/task", this.requestjson);
-        taskService.setFuncname("/task");
-        taskService.setLog(log);
-        taskService.addTask(id);
-        return taskService.getResultJson();
-    }
+//    @RequestMapping(value = "/task/{id}", method = RequestMethod.POST)
+//    public @ResponseBody String addTask(@PathVariable(value="id") Integer id) {
+//        //TaskService service= new TaskService(log, "/task", this.requestjson);
+//        taskService.setFuncname("/task");
+//        taskService.setLog(log);
+//        taskService.addTask(id);
+//        return taskService.getResultJson();
+//    }
 
 //    @RequestMapping(value = "/task", method = RequestMethod.POST)
 //    public @ResponseBody String addTaskPost(@ModelAttribute("task")Task task) {
@@ -61,10 +61,10 @@ public class TaskController extends BaseDispatcher{
 //        return taskService.getResultJson();
 //    }
 
-    @RequestMapping(value = "/tasks")
-    public @ResponseBody String showAllTask() {
-        return taskService.getAllTasks();
-    }
+//    @RequestMapping(value = "/tasks")
+//    public @ResponseBody String showAllTask() {
+//        return taskService.getAllTasks();
+//    }
 
     //RestfulAPI 参数列表形式请求
     @RequestMapping(value = "/task/{name}/{version}/{path}", method = RequestMethod.POST)

@@ -40,28 +40,28 @@ public class TaskService extends ServiceSupport{
         super(log, funcname, requestJson);
     }
 
-    public int taskCount(){
-        return taskDao.getAllUser().size();
-    }
+//    public int taskCount(){
+//        return taskDao.getAllUser().size();
+//    }
+//
+//    public void addTask(){
+//        try {
+//            taskDao.addTask();
+//            this.packageResultJson();
+//        } catch (Exception e) {
+//            log.error("添加任务", e);
+//
+//            packageError("添加任务失败！\n原因:" + e.getMessage());
+//        }
+//    }
 
-    public void addTask(){
-        try {
-            taskDao.addTask();
-            this.packageResultJson();
-        } catch (Exception e) {
-            log.error("添加任务", e);
-
-            packageError("添加任务失败！\n原因:" + e.getMessage());
-        }
-    }
-
-    public String getAllTasks() {
-        return JSONArray.toJSONString(taskDao.getAllTasks());
-    }
+//    public String getAllTasks() {
+//        return JSONArray.toJSONString(taskDao.getAllTasks());
+//    }
 
     public void addTask(Task task) {
         try {
-            taskDao.addTask(task);
+            taskDao.save(task);
             packageResultJson();
         } catch (Exception e) {
             log.error("添加任务", e);
@@ -70,16 +70,16 @@ public class TaskService extends ServiceSupport{
         }
     }
 
-    public void addTask(int id){
-        try {
-            taskDao.addTask(id);
-            this.packageResultJson();
-        } catch (Exception e) {
-            log.error("添加任务", e);
-
-            packageError("添加任务失败！\n原因:" + e.getMessage());
-        }
-    }
+//    public void addTask(int id){
+//        try {
+//            taskDao.addTask(id);
+//            this.packageResultJson();
+//        } catch (Exception e) {
+//            log.error("添加任务", e);
+//
+//            packageError("添加任务失败！\n原因:" + e.getMessage());
+//        }
+//    }
 
     public void startTask(String projectName, String projectVersion, String projectPath){
 
@@ -91,7 +91,7 @@ public class TaskService extends ServiceSupport{
 
         try {
             //向数据库添加新启动的作业
-            taskDao.addTask(newTask);
+            taskDao.save(newTask);
             this.packageResultJson();
         } catch (Exception e) {
             log.error("创建任务", e);
@@ -110,7 +110,7 @@ public class TaskService extends ServiceSupport{
         newTask.setTaskState(1);
         try {
             //向数据库添加新启动的作业
-            taskDao.addTask(newTask);
+            taskDao.save(newTask);
             //分析PMD缺陷,
             //注释这行代码 如果你本机缺少PMD-JAR运行环境
             analysePMDDefects(newTask);
@@ -140,7 +140,8 @@ public class TaskService extends ServiceSupport{
             staticDefect.setModuleID(moduleID++);
             staticDefect.setLocation(analyseResult[1]);
             staticDefect.setDescription(analyseResult[2].trim());
-            staticDefectDao.addStaticDefect(staticDefect);
+            //staticDefectDao.addStaticDefect(staticDefect);
+            staticDefectDao.save(staticDefect);
             System.out.println(output);
         }
     }
