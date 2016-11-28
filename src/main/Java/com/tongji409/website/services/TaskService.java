@@ -3,6 +3,7 @@ package com.tongji409.website.services;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.tongji409.domain.StaticDefect;
 import com.tongji409.domain.Task;
 import com.tongji409.util.config.StaticConstant;
@@ -74,7 +75,7 @@ public class TaskService extends ServiceSupport{
 
     public void getTasks(){
         List<Task> tasks = taskDao.getAll();
-        String strString = JSON.toJSONString(tasks);
+        String strString = JSON.toJSONString(tasks, SerializerFeature.WriteDateUseDateFormat);
         JSONArray jsonArrayTasks = JSONArray.parseArray(strString);
         this.resultdata.put("result",jsonArrayTasks);
 
