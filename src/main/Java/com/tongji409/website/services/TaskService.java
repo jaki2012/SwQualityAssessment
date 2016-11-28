@@ -1,5 +1,6 @@
 package com.tongji409.website.services;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.tongji409.domain.StaticDefect;
@@ -14,6 +15,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by lijiechu on 16/11/15.
@@ -67,6 +69,20 @@ public class TaskService extends ServiceSupport{
             log.error("添加任务", e);
 
             packageError("添加任务失败！\n原因:" + e.getMessage());
+        }
+    }
+
+    public void getTasks(){
+        List<Task> tasks = taskDao.getAll();
+        String strString = JSON.toJSONString(tasks);
+        JSONArray jsonArrayTasks = JSONArray.parseArray(strString);
+        this.resultdata.put("result",jsonArrayTasks);
+
+        try {
+            this.packageResultJson();
+        } catch (Exception e) {
+            log.error("获取所有任务", e);
+            packageError("获取所有任务失败！\n原因:" + e.getMessage());
         }
     }
 

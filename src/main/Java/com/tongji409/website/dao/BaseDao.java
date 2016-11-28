@@ -1,12 +1,13 @@
 package com.tongji409.website.dao;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by lijiechu on 16/11/18.
  */
 
-public interface BaseDao<T, PK extends Serializable>{
+public interface BaseDao<T, PK extends Serializable> {
 
     /******************基本的CRUD操作:创建(Create),检索(Retrieve),更新Update,删除(Delete)*********************/
 
@@ -41,5 +42,12 @@ public interface BaseDao<T, PK extends Serializable>{
      * @param id
      */
     public boolean deleteById(PK id);
+
+    /**
+     * 获取全部实体
+     * @return List<T>
+     */
+    public List<T> getAll();
+
 
 }

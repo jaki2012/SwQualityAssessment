@@ -52,8 +52,17 @@
         </property>
     </bean>
 
+    <bean id="hibernateTemplate"
+          class="org.springframework.orm.hibernate5.HibernateTemplate">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory" />
+        </property>
+    </bean>
+
+
     <bean id="taskDao" class="com.tongji409.website.dao.impl.TaskDaoImpl">
         <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="hibernateTemplate" ref="hibernateTemplate" />
     </bean>
 
     <bean id="taskService" class="com.tongji409.website.services.TaskService">
@@ -63,6 +72,7 @@
 
     <bean id="staticDefectDao" class="com.tongji409.website.dao.impl.StaticDefectDaoImpl">
         <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="hibernateTemplate" ref="hibernateTemplate" />
     </bean>
     <bean id="staticDefectService" class="com.tongji409.website.services.StaticDefectService">
         <property name="staticDefectDao" ref="staticDefectDao"/>

@@ -45,15 +45,14 @@ public class TaskController extends BaseDispatcher{
 //        return mv;
 //    }
 
-    //@PathVariable(value="id") Integer id
-//    @RequestMapping(value = "/task/{id}", method = RequestMethod.POST)
-//    public @ResponseBody String addTask(@PathVariable(value="id") Integer id) {
-//        //TaskService service= new TaskService(log, "/task", this.requestjson);
-//        taskService.setFuncname("/task");
-//        taskService.setLog(log);
-//        taskService.addTask(id);
-//        return taskService.getResultJson();
-//    }
+    @RequestMapping(value = "/tasks", method = RequestMethod.GET)
+    public @ResponseBody String getTasks() {
+        //TaskService service= new TaskService(log, "/task", this.requestjson);
+        taskService.setFuncname("/getTasks");
+        taskService.setLog(log);
+        taskService.getTasks();
+        return taskService.getResultJson();
+    }
 
 //    @RequestMapping(value = "/task", method = RequestMethod.POST)
 //    public @ResponseBody String addTaskPost(@ModelAttribute("task")Task task) {
