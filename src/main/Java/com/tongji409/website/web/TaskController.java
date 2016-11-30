@@ -45,7 +45,7 @@ public class TaskController extends BaseDispatcher{
 //        return mv;
 //    }
 
-    @RequestMapping(value = "/tasks", method = RequestMethod.GET)
+    @RequestMapping(value = "/tasks", method = RequestMethod.GET,produces="text/html;charset=UTF-8")
     public @ResponseBody String getTasks() {
         //TaskService service= new TaskService(log, "/task", this.requestjson);
         taskService.setFuncname("/getTasks");

@@ -78,6 +78,7 @@ public class TaskService extends ServiceSupport{
         String strString = JSON.toJSONString(tasks, SerializerFeature.WriteDateUseDateFormat);
         JSONArray jsonArrayTasks = JSONArray.parseArray(strString);
         this.resultdata.put("result",jsonArrayTasks);
+        this.resultdata.put("chtest","我爱你");
 
         try {
             this.packageResultJson();
