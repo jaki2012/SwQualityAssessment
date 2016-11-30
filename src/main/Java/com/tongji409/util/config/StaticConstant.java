@@ -86,6 +86,23 @@ public class StaticConstant {
     public static final int SYS_STATE_APPLY = 2; // 待审核
     public static final int SYS_STATE_VETO = 97; // 拒绝
     public static final int SYS_STATE_UNEFF = 99; // 删除
+    /******************************基本数据END***************************************/
+
+    /******************************Token相关BEGIN***************************************/
+
+    /**
+     * token有效期（小时）
+     */
+    public static final int  TOKEN_EXPIRES_HOUR= 72;
+    /**
+     * 存储当前登录用户id的字段名
+     */
+    public static final String CURRENT_USER_ID = "CURRENT_USER_ID";
+    /**
+     * 存放Authorization的header字段
+     */
+    public static final String AUTHORIZATION = "authorization";
+    /*******************************Token相关END****************************************/
 
     /******************************基本数据BEGIN***************************************/
     public static final String PMD_JAR_PATH = "/Users/lijiechu/Documents/pmd-bin/pmd-bin-5.6.0-SNAPSHOT/bin/run.sh";

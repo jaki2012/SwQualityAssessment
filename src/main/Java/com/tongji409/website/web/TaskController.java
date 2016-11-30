@@ -4,7 +4,6 @@ package com.tongji409.website.web;
  * Created by lijiechu on 16/11/15.
  */
 import com.tongji409.domain.Task;
-import com.tongji409.util.log.DLogger;
 import com.tongji409.website.services.StaticDefectService;
 import com.tongji409.website.services.TaskService;
 import com.tongji409.website.web.Support.BaseDispatcher;
