@@ -82,15 +82,16 @@
         <property name="hibernateTemplate" ref="hibernateTemplate" />
     </bean>
 
+    <bean id="staticDefectDao" class="com.tongji409.website.dao.impl.StaticDefectDaoImpl">
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="hibernateTemplate" ref="hibernateTemplate" />
+    </bean>
+
     <bean id="taskService" class="com.tongji409.website.services.TaskService">
         <property name="taskDao" ref="taskDao"/>
         <property name="staticDefectDao" ref="staticDefectDao"/>
     </bean>
 
-    <bean id="staticDefectDao" class="com.tongji409.website.dao.impl.StaticDefectDaoImpl">
-        <property name="sessionFactory" ref="sessionFactory"/>
-        <property name="hibernateTemplate" ref="hibernateTemplate" />
-    </bean>
     <bean id="staticDefectService" class="com.tongji409.website.services.StaticDefectService">
         <property name="staticDefectDao" ref="staticDefectDao"/>
     </bean>

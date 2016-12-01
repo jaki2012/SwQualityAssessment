@@ -53,6 +53,9 @@ public class TokenController extends BaseDispatcher{
     @RequestMapping(method = RequestMethod.DELETE)
     @Authorization
     public ResponseEntity logout(@CurrentUser User user) {
+        if("true".equals(request.getAttribute("401"))){
+            return new ResponseEntity<>(ResultModel.error(ResultStatus.USER_NOT_LOGIN),HttpStatus.UNAUTHORIZED);
+        }
         tokenManager.deleteToken(user.getId());
         return new ResponseEntity<>(ResultModel.ok(), HttpStatus.OK);
     }

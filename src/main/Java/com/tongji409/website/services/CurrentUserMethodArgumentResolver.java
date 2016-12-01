@@ -46,6 +46,8 @@ public class CurrentUserMethodArgumentResolver implements HandlerMethodArgumentR
             //从数据库中查询并返回
             return userDao.get(currentUserId);
         }
-         throw new MissingServletRequestPartException(StaticConstant.CURRENT_USER_ID);
+        //Temporally add the below line and remove throwing exception
+        return null;
+//        throw new MissingServletRequestPartException(StaticConstant.CURRENT_USER_ID);
     }
 }

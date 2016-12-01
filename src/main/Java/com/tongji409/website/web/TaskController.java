@@ -3,12 +3,18 @@ package com.tongji409.website.web;
 /**
  * Created by lijiechu on 16/11/15.
  */
+import com.tongji409.domain.ResultModel;
 import com.tongji409.domain.Task;
+import com.tongji409.util.config.ResultStatus;
+import com.tongji409.util.token.Authorization;
 import com.tongji409.website.services.StaticDefectService;
 import com.tongji409.website.services.TaskService;
 import com.tongji409.website.web.Support.BaseDispatcher;
 import org.springframework.context.annotation.Scope;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -43,12 +49,16 @@ public class TaskController extends BaseDispatcher{
 //        mv.setViewName("task");
 //        return mv;
 //    }
-
+    //返回所有任务列表
     @RequestMapping(value = "/tasks", method = RequestMethod.GET,produces="text/html;charset=UTF-8")
+    @Authorization
     public @ResponseBody String getTasks() {
-        //TaskService service= new TaskService(log, "/task", this.requestjson);
         taskService.setFuncname("/getTasks");
         taskService.setLog(log);
+        if("true".equals(request.getAttribute("401"))){
+            //taskService.packageError("test");
+            taskService.ensureNotLogin();
+        } else
         taskService.getTasks();
         return taskService.getResultJson();
     }

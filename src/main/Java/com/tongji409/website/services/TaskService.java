@@ -11,6 +11,7 @@ import com.tongji409.util.log.DLogger;
 import com.tongji409.website.dao.StaticDefectDao;
 import com.tongji409.website.dao.TaskDao;
 import com.tongji409.website.services.support.ServiceSupport;
+import org.springframework.context.annotation.Scope;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -26,22 +27,6 @@ public class TaskService extends ServiceSupport{
 
     private TaskDao taskDao;
     private StaticDefectDao staticDefectDao;
-
-    public TaskService(){
-
-    }
-
-    public TaskService(DLogger log){
-        super(log);
-    }
-
-    public TaskService(DLogger log, String funcname) {
-        super(log, funcname);
-    }
-
-    public TaskService(DLogger log, String funcname, JSONObject requestJson) {
-        super(log, funcname, requestJson);
-    }
 
 //    public int taskCount(){
 //        return taskDao.getAllUser().size();
@@ -162,6 +147,11 @@ public class TaskService extends ServiceSupport{
             staticDefectDao.save(staticDefect);
             System.out.println(output);
         }
+    }
+
+    //taskService的操作
+    public void ensureNotLogin(){
+        packageError("用户尚未登陆,无法进行此操作!");
     }
 
 

@@ -5,11 +5,13 @@ import com.alibaba.fastjson.JSONObject;
 import com.tongji409.util.config.StaticConstant;
 import com.tongji409.util.log.DLogger;
 import com.tongji409.util.tools.Tools;
+import org.springframework.stereotype.Repository;
 
 /**
  * Created by lijiechu on 16/11/18.
  */
-public abstract class ServiceSupport {//} implements ServiceInterface {
+@Repository(value = "serviceSupport")
+public  class ServiceSupport {//} implements ServiceInterface {
 
     protected DLogger log;    // 日志控制器
 
@@ -34,7 +36,6 @@ public abstract class ServiceSupport {//} implements ServiceInterface {
     protected JSONArray resultdatas = new JSONArray();        //查询结果JSON
     protected long starttime = 0;    //当前时间
     private boolean isRSA = false; //加密标志
-
 
     public ServiceSupport() {
 
