@@ -31,8 +31,8 @@
     "error_code": 0,
 	"message":"成功",
     "data": {
-	  "userid":1
-      "token": "11bcb04ee1d74616b1ca9bd7ffd3438e""
+	  "userid":1,
+      "token": "11bcb04ee1d74616b1ca9bd7ffd3438e"
     }
   }
 ```
@@ -60,7 +60,7 @@
 
 |参数名|必选|类型|说明|
 |:----    |:---|:----- |-----   |
-|authorization |是  |string |用户登录token   |
+|authorization |是  |string |用户登录token, token = userid_token |
 |projectid |是  |string |项目ID   |
 |projectname |是  |string | 项目名称    |
 |projectversion | 是  |string | 项目版本    |
@@ -79,9 +79,11 @@
 ```
 
  **返回参数说明** 
+
 |参数名|类型|说明|
-|:-----  |:-----|-----              |
+|:-----  |:-----|-----                           |
 |taskid |int   |生成一个任务/作业编号  |
+
 ** **
 ### 获取以往分析作业情况
 **简要描述：** 
@@ -98,7 +100,7 @@
 
 |参数名|必选|类型|说明|
 |:----    |:---|:----- |-----   |
-|authorization |是  |string |用户登录token   |
+|authorization |是  |string |用户登录token, token = userid_token |
 |taskid |是  |int[] |包含一个或多个任务id的数组   |
 
  **返回示例**
