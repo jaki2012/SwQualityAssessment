@@ -87,12 +87,12 @@
         <property name="hibernateTemplate" ref="hibernateTemplate" />
     </bean>
 
-    <bean id="taskService" class="com.tongji409.website.services.TaskService">
+    <bean id="taskService" class="com.tongji409.website.services.TaskService" scope="prototype">
         <property name="taskDao" ref="taskDao"/>
         <property name="staticDefectDao" ref="staticDefectDao"/>
     </bean>
 
-    <bean id="staticDefectService" class="com.tongji409.website.services.StaticDefectService">
+    <bean id="staticDefectService" class="com.tongji409.website.services.StaticDefectService" scope="prototype">
         <property name="staticDefectDao" ref="staticDefectDao"/>
     </bean>
 
@@ -101,7 +101,7 @@
         <property name="hibernateTemplate" ref="hibernateTemplate" />
     </bean>
 
-    <bean id="userService" class="com.tongji409.website.services.UserService">
+    <bean id="userService" class="com.tongji409.website.services.UserService" scope="prototype">
         <property name="userDao" ref="userDao"/>
     </bean>
 
