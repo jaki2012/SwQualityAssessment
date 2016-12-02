@@ -1,6 +1,5 @@
-package com.tongji409.website.web;
+package com.tongji409.website.controllers;
 
-import com.tongji409.util.log.DLogger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;

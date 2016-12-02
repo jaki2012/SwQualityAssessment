@@ -1,14 +1,14 @@
-package com.tongji409.website.web;
+package com.tongji409.website.controllers;
 
 import com.tongji409.domain.ResultModel;
 import com.tongji409.domain.Token;
 import com.tongji409.domain.User;
 import com.tongji409.util.config.ResultStatus;
-import com.tongji409.util.token.Authorization;
-import com.tongji409.util.token.CurrentUser;
-import com.tongji409.util.token.TokenManager;
+import com.tongji409.util.token.annotation.Authorization;
+import com.tongji409.util.token.annotation.CurrentUser;
+import com.tongji409.util.token.manager.TokenManager;
 import com.tongji409.website.services.UserService;
-import com.tongji409.website.web.Support.BaseDispatcher;
+import com.tongji409.website.controllers.Support.BaseDispatcher;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -105,7 +105,7 @@
         <property name="userDao" ref="userDao"/>
     </bean>
 
-    <bean id="tokenManager" class="com.tongji409.util.token.RedisTokenManager">
+    <bean id="tokenManager" class="com.tongji409.util.token.manager.RedisTokenManager">
         <property name="redis" ref="redisTemplate"/>
     </bean>
 

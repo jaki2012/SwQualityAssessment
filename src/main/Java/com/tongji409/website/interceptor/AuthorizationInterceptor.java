@@ -2,8 +2,8 @@ package com.tongji409.website.interceptor;
 
 import com.tongji409.domain.Token;
 import com.tongji409.util.config.StaticConstant;
-import com.tongji409.util.token.Authorization;
-import com.tongji409.util.token.TokenManager;
+import com.tongji409.util.token.annotation.Authorization;
+import com.tongji409.util.token.manager.TokenManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;

@@ -1,4 +1,4 @@
-package com.tongji409.util.token;
+package com.tongji409.util.token.manager;
 
 import com.tongji409.domain.Token;
 

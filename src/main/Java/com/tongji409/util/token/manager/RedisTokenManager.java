@@ -1,12 +1,10 @@
-package com.tongji409.util.token;
+package com.tongji409.util.token.manager;
 
 import com.tongji409.domain.Token;
 import com.tongji409.util.config.StaticConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;

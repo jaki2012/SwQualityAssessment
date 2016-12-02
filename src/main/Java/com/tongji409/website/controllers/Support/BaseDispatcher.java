@@ -1,4 +1,4 @@
-package com.tongji409.website.web.Support;
+package com.tongji409.website.controllers.Support;
 
 import com.alibaba.fastjson.JSONObject;
 import com.tongji409.exception.NoUserException;
@@ -7,7 +7,6 @@ import com.tongji409.util.log.DLogger;
 import com.tongji409.util.tools.Tools;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;

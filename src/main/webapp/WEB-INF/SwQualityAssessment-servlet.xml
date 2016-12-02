@@ -18,7 +18,7 @@
         </mvc:message-converters>
 
         <mvc:argument-resolvers>
-            <bean class="com.tongji409.website.services.CurrentUserMethodArgumentResolver"/>
+            <bean class="com.tongji409.util.token.resolver.CurrentUserMethodArgumentResolver"/>
         </mvc:argument-resolvers>
     </mvc:annotation-driven>
 

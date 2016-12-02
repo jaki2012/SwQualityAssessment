@@ -1,20 +1,15 @@
-package com.tongji409.website.web;
+package com.tongji409.website.controllers;
 
 /**
  * Created by lijiechu on 16/11/15.
  */
-import com.tongji409.domain.ResultModel;
 import com.tongji409.domain.Task;
-import com.tongji409.util.config.ResultStatus;
-import com.tongji409.util.token.Authorization;
+import com.tongji409.util.token.annotation.Authorization;
 import com.tongji409.website.services.StaticDefectService;
 import com.tongji409.website.services.TaskService;
-import com.tongji409.website.web.Support.BaseDispatcher;
+import com.tongji409.website.controllers.Support.BaseDispatcher;
 import org.springframework.context.annotation.Scope;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -22,7 +17,7 @@ import javax.annotation.Resource;
 
 @Controller
 @Scope("prototype")
-@RequestMapping("/task")
+@RequestMapping("/api")
 public class TaskController extends BaseDispatcher{
 
     @Resource(name = "taskService")
@@ -56,7 +51,7 @@ public class TaskController extends BaseDispatcher{
         taskService.setFuncname("/getTasks");
         taskService.setLog(log);
         if("true".equals(request.getAttribute("401"))){
-            //taskService.packageError("test");
+            //Spring AOP CGLIB动态代理不支持final类 故包装一层
             taskService.ensureNotLogin();
         } else
         taskService.getTasks();

@@ -1,20 +1,15 @@
-package com.tongji409.website.services;
+package com.tongji409.util.token.resolver;
 
 import com.tongji409.domain.User;
 import com.tongji409.util.config.StaticConstant;
-import com.tongji409.util.token.CurrentUser;
+import com.tongji409.util.token.annotation.CurrentUser;
 import com.tongji409.website.dao.UserDao;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
-import org.springframework.web.multipart.support.MissingServletRequestPartException;
 
 import javax.annotation.Resource;
 
