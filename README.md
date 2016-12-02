@@ -1,7 +1,7 @@
 # SwQualityAssessment
 ** **
 基于前后端分离思想的软件质量管理后台，使用Spring + SpringMVC + Hibernate框架。
-- Restful API风格设计
+- Restful 风格API设计
 - Redis缓存，用户Token验证机制
 
 ## API接口用法：
@@ -74,6 +74,7 @@
     "data": {
       "taskid": "1",
       "starttime": "1436864169",
+      "taskState":"2"
     }
   }
 ```

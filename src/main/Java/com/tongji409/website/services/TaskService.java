@@ -110,12 +110,17 @@ public class TaskService extends ServiceSupport{
 
     public void startTask(Task newTask){
         newTask.setStartTime(new Date());
-        newTask.setTaskState(1);
+        //1:已完成 2:排队中 3:分析中 4:已失败
+        newTask.setTaskState(2);
         try {
             //向数据库添加新启动的作业
-            taskDao.save(newTask);
-            //分析PMD缺陷,
-            //注释这行代码 如果你本机缺少PMD-JAR运行环境
+            int taskID = (int)taskDao.save(newTask);
+            Task savedTask = (Task) taskDao.get(taskID);
+            this.resultdata.put("taskid",taskID);
+            this.resultdata.put("starttime",savedTask.getStartTime());
+            this.resultdata.put("taskstate",savedTask.getTaskState());
+            //分析PMD缺陷
+            //如果你本机缺少PMD-JAR运行环境,请注释此行代码
             analysePMDDefects(newTask);
             this.packageResultJson();
         } catch (Exception e) {

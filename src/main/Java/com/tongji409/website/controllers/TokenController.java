@@ -25,7 +25,7 @@ import javax.annotation.Resource;
  */
 @RestController
 @Scope("prototype")
-@RequestMapping("/tokens")
+@RequestMapping("/api/user")
 public class TokenController extends BaseDispatcher{
 
     @Resource(name = "userService")
@@ -34,7 +34,7 @@ public class TokenController extends BaseDispatcher{
     @Resource(name = "tokenManager")
     private TokenManager tokenManager;
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity login(@RequestParam String username, @RequestParam String password) {
         Assert.notNull(username, "username can not be empty");
         Assert.notNull(password, "password can not be empty");
