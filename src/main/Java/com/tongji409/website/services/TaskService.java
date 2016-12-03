@@ -2,16 +2,13 @@ package com.tongji409.website.services;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.tongji409.domain.StaticDefect;
 import com.tongji409.domain.Task;
 import com.tongji409.util.config.StaticConstant;
-import com.tongji409.util.log.DLogger;
 import com.tongji409.website.dao.StaticDefectDao;
 import com.tongji409.website.dao.TaskDao;
 import com.tongji409.website.services.support.ServiceSupport;
-import org.springframework.context.annotation.Scope;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -115,6 +112,7 @@ public class TaskService extends ServiceSupport{
         try {
             //向数据库添加新启动的作业
             int taskID = (int)taskDao.save(newTask);
+            //设置返回参数
             Task savedTask = (Task) taskDao.get(taskID);
             this.resultdata.put("taskid",taskID);
             this.resultdata.put("starttime",savedTask.getStartTime());
