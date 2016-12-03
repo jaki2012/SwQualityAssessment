@@ -1,7 +1,7 @@
 /**
  * Created by 13987 on 2016/11/27.
  */
-package com.tongji409.website.services;
+package com.tongji409.website.service;
 
 import com.tongji409.util.config.StaticConstant;
 

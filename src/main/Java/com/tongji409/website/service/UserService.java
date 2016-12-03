@@ -1,4 +1,4 @@
-package com.tongji409.website.services;
+package com.tongji409.website.service;
 
 import com.tongji409.domain.User;
 import com.tongji409.website.dao.UserDao;

@@ -1,7 +1,7 @@
-package com.tongji409.website.services;
+package com.tongji409.website.service;
 
 import com.tongji409.website.dao.StaticDefectDao;
-import com.tongji409.website.services.support.ServiceSupport;
+import com.tongji409.website.service.support.ServiceSupport;
 
 /**
  * Created by lijiechu on 16/11/26.

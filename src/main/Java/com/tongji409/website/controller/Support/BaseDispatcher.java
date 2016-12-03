@@ -1,4 +1,4 @@
-package com.tongji409.website.controllers.Support;
+package com.tongji409.website.controller.Support;
 
 import com.alibaba.fastjson.JSONObject;
 import com.tongji409.exception.NoUserException;

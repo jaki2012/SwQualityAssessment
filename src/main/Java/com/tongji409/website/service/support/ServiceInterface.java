@@ -1,4 +1,4 @@
-package com.tongji409.website.services.support;
+package com.tongji409.website.service.support;
 
 /**
  * Created by lijiechu on 16/11/18.

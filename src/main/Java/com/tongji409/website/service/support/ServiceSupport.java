@@ -1,4 +1,4 @@
-package com.tongji409.website.services.support;
+package com.tongji409.website.service.support;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -249,6 +249,21 @@ public  class ServiceSupport {//} implements ServiceInterface {
         } else {
             return "";
         }
+    }
+
+    /**
+     * 解决FastJson单独转换date为标准格式string后多出两个双引号的问题
+     *
+     * @param @param  date
+     * @param @return date
+     * @Title: dateQuotesTrim
+     * @author: lijiechu
+     */
+    protected String dateQuotesTrim(String date){
+        if(null == date || date.length()< 2){
+            return "error date format";
+        }
+        return date.substring(1,date.length()-1);
     }
 
 
