@@ -3,6 +3,7 @@ package com.tongji409.website.services;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.tongji409.DimensionCalculator;
 import com.tongji409.domain.StaticDefect;
 import com.tongji409.domain.Task;
 import com.tongji409.util.config.StaticConstant;
@@ -10,6 +11,7 @@ import com.tongji409.util.task.TaskPool;
 import com.tongji409.website.dao.StaticDefectDao;
 import com.tongji409.website.dao.TaskDao;
 import com.tongji409.website.services.support.ServiceSupport;
+import metrics.MetricsEvaluator;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -28,13 +30,6 @@ public class TaskService extends ServiceSupport {
     private FileSystemService fileSystemService;
     private TaskPool taskPool;
 
-    public FileSystemService getFileSystemService() {
-        return fileSystemService;
-    }
-
-    public void setFileSystemService(FileSystemService fileSystemService) {
-        this.fileSystemService = fileSystemService;
-    }
 
     //    public int taskCount(){
 //        return taskDao.getAllUser().size();
@@ -129,11 +124,34 @@ public class TaskService extends ServiceSupport {
             this.resultdata.put("taskid", taskID);
             this.resultdata.put("starttime", savedTask.getStartTime());
             this.resultdata.put("taskstate", savedTask.getTaskState());
-            //下载
 
+            // 任务新建完成 交给任务池去处理接下来的工作
+            String path = "Test1";
+            String archive = "http://gitlab.lab-sse.cn/Novemser/Carpool/repository/archive.zip?ref=master";
+            // 1. 39维度分析
+            // 下载
+            fileSystemService.saveArchiveToFile(path, archive);
 
-            //分析PMD缺陷
-            //如果你本机缺少PMD-JAR运行环境,请注释此行代码
+            // 解压
+            String pth = fileSystemService.unzipProject(path);
+
+            // 分析
+            // 如果缺少Jar包,请注释此行代码
+            if (pth != null) {
+
+                DimensionCalculator calculator = new DimensionCalculator();
+                calculator.calculateFiles(fileSystemService.listServerFiles(pth));
+                List<List<MetricsEvaluator>> projectMetricsList = calculator.getProjectMetrics();
+
+                for (List<MetricsEvaluator> moduleMetricList : projectMetricsList) {
+                    for (MetricsEvaluator item : moduleMetricList) {
+                        System.out.println(item.moduleName);
+                    }
+                }
+            }
+
+            // 2. 分析PMD缺陷
+            // 如果你本机缺少PMD-JAR运行环境,请注释此行代码
 //            analysePMDDefects(newTask);
             this.packageResultJson();
         } catch (Exception e) {
@@ -143,8 +161,6 @@ public class TaskService extends ServiceSupport {
         }
 
     }
-
-
 
     @SuppressWarnings("all")
     public void analysePMDDefects(Task task) throws IOException {
@@ -198,5 +214,13 @@ public class TaskService extends ServiceSupport {
 
     public void setTaskPool(TaskPool taskPool) {
         this.taskPool = taskPool;
+    }
+
+    public FileSystemService getFileSystemService() {
+        return fileSystemService;
+    }
+
+    public void setFileSystemService(FileSystemService fileSystemService) {
+        this.fileSystemService = fileSystemService;
     }
 }

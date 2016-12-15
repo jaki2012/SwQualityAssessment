@@ -2,15 +2,21 @@ package com.tongji409.website.services;
 
 import com.tongji409.website.services.support.ServiceSupport;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.Proxy;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipException;
+import java.util.zip.ZipFile;
+import java.util.zip.ZipInputStream;
 
 /**
  * Project: SwQualityAssesment
@@ -21,6 +27,8 @@ import java.net.URLConnection;
 @Service
 @ComponentScan
 public class FileSystemService extends ServiceSupport {
+
+    private String serverFileRootPath = "F:\\409\\";
 
     /***
      * 把文件从指定URL下载下来
@@ -41,7 +49,12 @@ public class FileSystemService extends ServiceSupport {
         }
 
         // First generate a temp file
-        File saveFile = new File(fileName + ".tmp");
+        File fileFolder = new File(serverFileRootPath + fileName + "_dir");
+
+        fileFolder.mkdirs();
+
+        File saveFile = new File(serverFileRootPath + fileName + "_dir\\" + fileName + ".tmp");
+
         if (saveFile.exists())
             saveFile.delete();
 
@@ -75,7 +88,7 @@ public class FileSystemService extends ServiceSupport {
 //            offset += count;
 //        }
         // If succeed, change to the desired name
-        File dest = new File(fileName);
+        File dest = new File(serverFileRootPath + fileName + "_dir\\" + fileName + ".zip");
         if (dest.exists())
             dest.delete();
 
@@ -86,5 +99,119 @@ public class FileSystemService extends ServiceSupport {
         }
 
         return true;
+    }
+
+    /***
+     * 验证下载的文件是否完好
+     * @param file 文件对象
+     * @return true:完整, false otherwise
+     */
+    public boolean isZipFileValid(final File file) {
+        ZipFile zipfile = null;
+        ZipInputStream zis = null;
+        try {
+            zipfile = new ZipFile(file);
+            zis = new ZipInputStream(new FileInputStream(file));
+            ZipEntry ze = zis.getNextEntry();
+            if (ze == null) {
+                return false;
+            }
+            while (ze != null) {
+                // if it throws an exception fetching any of the following then we know the file is corrupted.
+                zipfile.getInputStream(ze);
+                ze.getCrc();
+                ze.getCompressedSize();
+                ze.getName();
+                ze = zis.getNextEntry();
+            }
+            return true;
+        } catch (ZipException e) {
+            return false;
+        } catch (IOException e) {
+            return false;
+        } finally {
+            try {
+                if (zipfile != null) {
+                    zipfile.close();
+                }
+                if (zis != null) {
+                    zis.close();
+                }
+            } catch (IOException e) {
+                return false;
+            }
+
+        }
+    }
+
+    public String unzipProject(String name) {
+        File[] files = listServerFiles(name);
+
+        if (files.length != 1)
+            return null;
+
+        return unzipArchive(files[0]);
+    }
+
+    public void unzipAll(String path) {
+        unzipArchives(listServerFiles(path));
+    }
+
+    public File[] listServerFiles(String path) {
+        if (null == path || path.equals(""))
+            return null;
+
+        File[] files = new File(serverFileRootPath + path + "_dir").listFiles();
+        return files;
+    }
+
+
+
+    public String unzipArchive(File file) {
+        if (file.isDirectory())
+            return null;
+
+        String relative = file.getName() + System.currentTimeMillis();
+        String pathName = serverFileRootPath + relative  + "_dir";
+
+        try {
+            if (FilenameUtils.getExtension(file.getCanonicalPath()).equals("zip")) {
+                net.lingala.zip4j.core.ZipFile zipFile = new net.lingala.zip4j.core.ZipFile(file);
+                zipFile.extractAll(pathName);
+            } else {
+                return null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        return relative;
+    }
+
+    public void unzipArchives(File[] files) {
+
+        for (File file : files) {
+            if (file.isDirectory()) {
+//                System.out.println("Directory: " + file.getName());
+                unzipArchives(file.listFiles()); // Calls same method again to extract dir.
+            } else {
+                try {
+                    if (FilenameUtils.getExtension(file.getCanonicalPath()).equals("zip"))
+                        try {
+                            net.lingala.zip4j.core.ZipFile zipFile = new net.lingala.zip4j.core.ZipFile(file);
+                            try {
+                                zipFile.extractAll(serverFileRootPath + file.getName() + System.currentTimeMillis());
+//                                System.out.println("Extract " + file.getName() + " successful.");
+                            } catch (net.lingala.zip4j.exception.ZipException e) {
+                                e.printStackTrace();
+                            }
+                        } catch (net.lingala.zip4j.exception.ZipException e) {
+                            e.printStackTrace();
+                        }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }

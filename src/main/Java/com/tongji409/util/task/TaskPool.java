@@ -4,6 +4,7 @@ import com.tongji409.domain.Task;
 
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 任务池
@@ -19,10 +20,9 @@ public class TaskPool {
 
     private int maximumPoolSize;
 
-    private ThreadPoolExecutor taskExecutor;
+    private ThreadPoolExecutor taskExecutor = new ThreadPoolExecutor(10, 100, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>());
 
     private LinkedBlockingQueue<Task> taskQueue = new LinkedBlockingQueue<>();
-
 
     public Integer getCurrentRunning() {
         return taskQueue.size();

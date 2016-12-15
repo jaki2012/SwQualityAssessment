@@ -99,7 +99,8 @@
     </bean>
 
     <bean id="taskQueue" class="com.tongji409.util.task.TaskPool">
-        <property name=""
+        <property name="corePoolSize" value="10"/>
+        <property name="maximumPoolSize" value="1000"/>
     </bean>
 
     <bean id="staticDefectService" class="com.tongji409.website.services.StaticDefectService" scope="prototype">
