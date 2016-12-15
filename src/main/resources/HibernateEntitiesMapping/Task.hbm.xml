@@ -13,5 +13,6 @@
         <property name="endTime"/>
         <property name="path"/>
         <property name="taskState"/>
+        <property name="archivePath"/>
     </class>
 </hibernate-mapping>

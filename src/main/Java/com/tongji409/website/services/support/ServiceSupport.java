@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
  * Created by lijiechu on 16/11/18.
  */
 @Repository(value = "serviceSupport")
-public  class ServiceSupport {//} implements ServiceInterface {
+public class ServiceSupport {//} implements ServiceInterface {
 
     protected DLogger log;    // 日志控制器
 

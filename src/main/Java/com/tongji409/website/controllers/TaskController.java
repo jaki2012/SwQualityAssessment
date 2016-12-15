@@ -74,19 +74,19 @@ public class TaskController extends BaseDispatcher{
     public @ResponseBody String startTask(@PathVariable(value = "name") String projectName,
                                           @PathVariable(value = "version") String projectVersion,
                                           @PathVariable(value = "path") String projectPath){
-        taskService.setFuncname("/startTask");
+        taskService.setFuncname("/enqueueTask");
         //Remember to add , otherwise JavaNullPointerException
         taskService.setLog(this.log);
-        taskService.startTask(projectName,projectVersion,projectPath);
+        taskService.enqueueTask(projectName,projectVersion,projectPath);
         return taskService.getResultJson();
     }
 
     //RestfulAPI Body Json形式请求
     @RequestMapping(value = "/task", method = RequestMethod.POST)
     public @ResponseBody String startTask(@RequestBody Task newTask) {
-        taskService.setFuncname("/startTask");
+        taskService.setFuncname("/enqueueTask");
         taskService.setLog(this.log);
-        taskService.startTask(newTask);
+        taskService.enqueueTask(newTask);
 
         return taskService.getResultJson();
     }

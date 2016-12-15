@@ -18,8 +18,18 @@ public class Task {
     private Date endTime;
     //代码托管的路径
     private String path;
+    //代码源文件下载的路径
+    private String archivePath;
 
     private int taskState;
+
+    public String getArchivePath() {
+        return archivePath;
+    }
+
+    public void setArchivePath(String archivePath) {
+        this.archivePath = archivePath;
+    }
 
     public int getTaskID() {
         return taskID;

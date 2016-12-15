@@ -6,6 +6,7 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.tongji409.domain.StaticDefect;
 import com.tongji409.domain.Task;
 import com.tongji409.util.config.StaticConstant;
+import com.tongji409.util.task.TaskPool;
 import com.tongji409.website.dao.StaticDefectDao;
 import com.tongji409.website.dao.TaskDao;
 import com.tongji409.website.services.support.ServiceSupport;
@@ -20,12 +21,22 @@ import java.util.List;
  * Created by lijiechu on 16/11/15.
  */
 
-public class TaskService extends ServiceSupport{
+public class TaskService extends ServiceSupport {
 
     private TaskDao taskDao;
     private StaticDefectDao staticDefectDao;
+    private FileSystemService fileSystemService;
+    private TaskPool taskPool;
 
-//    public int taskCount(){
+    public FileSystemService getFileSystemService() {
+        return fileSystemService;
+    }
+
+    public void setFileSystemService(FileSystemService fileSystemService) {
+        this.fileSystemService = fileSystemService;
+    }
+
+    //    public int taskCount(){
 //        return taskDao.getAllUser().size();
 //    }
 //
@@ -55,12 +66,12 @@ public class TaskService extends ServiceSupport{
         }
     }
 
-    public void getTasks(){
+    public void getTasks() {
         List<Task> tasks = taskDao.getAll();
         String strString = JSON.toJSONString(tasks, SerializerFeature.WriteDateUseDateFormat);
         JSONArray jsonArrayTasks = JSONArray.parseArray(strString);
-        this.resultdata.put("result",jsonArrayTasks);
-        this.resultdata.put("chtest","我爱你");
+        this.resultdata.put("result", jsonArrayTasks);
+        this.resultdata.put("chtest", "我爱你");
 
         try {
             this.packageResultJson();
@@ -81,7 +92,7 @@ public class TaskService extends ServiceSupport{
 //        }
 //    }
 
-    public void startTask(String projectName, String projectVersion, String projectPath){
+    public void enqueueTask(String projectName, String projectVersion, String projectPath) {
 
         Task newTask = new Task();
         newTask.setStartTime(new Date());
@@ -105,21 +116,25 @@ public class TaskService extends ServiceSupport{
 
     }
 
-    public void startTask(Task newTask){
+    @SuppressWarnings("unchecked")
+    public void enqueueTask(Task newTask) {
         newTask.setStartTime(new Date());
         //1:已完成 2:排队中 3:分析中 4:已失败
         newTask.setTaskState(2);
         try {
             //向数据库添加新启动的作业
-            int taskID = (int)taskDao.save(newTask);
+            int taskID = (int) taskDao.save(newTask);
             //设置返回参数
             Task savedTask = (Task) taskDao.get(taskID);
-            this.resultdata.put("taskid",taskID);
-            this.resultdata.put("starttime",savedTask.getStartTime());
-            this.resultdata.put("taskstate",savedTask.getTaskState());
+            this.resultdata.put("taskid", taskID);
+            this.resultdata.put("starttime", savedTask.getStartTime());
+            this.resultdata.put("taskstate", savedTask.getTaskState());
+            //下载
+
+
             //分析PMD缺陷
             //如果你本机缺少PMD-JAR运行环境,请注释此行代码
-            analysePMDDefects(newTask);
+//            analysePMDDefects(newTask);
             this.packageResultJson();
         } catch (Exception e) {
             log.error("创建任务", e);
@@ -129,18 +144,21 @@ public class TaskService extends ServiceSupport{
 
     }
 
+
+
+    @SuppressWarnings("all")
     public void analysePMDDefects(Task task) throws IOException {
 
         String path = task.getPath();
         String output;
         int moduleID = 0;
-        String [] analyseResult;
-        String command = StaticConstant.PMD_JAR_PATH + " pmd -d " + path + " -f text -R" +" " +
-                StaticConstant.PMD_JAVA_RULESETS_PATH+"basic.xml";
+        String[] analyseResult;
+        String command = StaticConstant.PMD_JAR_PATH + " pmd -d " + path + " -f text -R" + " " +
+                StaticConstant.PMD_JAVA_RULESETS_PATH + "basic.xml";
         Process process = Runtime.getRuntime().exec(command);
         //Process process = Runtime.getRuntime().exec(" pmd -d /Users/lijiechu/Downloads/FileManager.java -f text -R /Users/lijiechu/Documents/pmd/pmd-java/target/classes/rulesets/java/comments.xml");
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-        while((output = bufferedReader.readLine())!=null){
+        while ((output = bufferedReader.readLine()) != null) {
             analyseResult = output.split(":");
             StaticDefect staticDefect = new StaticDefect();
             staticDefect.setModuleID(moduleID++);
@@ -153,7 +171,7 @@ public class TaskService extends ServiceSupport{
     }
 
     //taskService的操作
-    public void ensureNotLogin(){
+    public void ensureNotLogin() {
         packageError("用户尚未登陆,无法进行此操作!");
     }
 
@@ -172,5 +190,13 @@ public class TaskService extends ServiceSupport{
 
     public void setStaticDefectDao(StaticDefectDao staticDefectDao) {
         this.staticDefectDao = staticDefectDao;
+    }
+
+    public TaskPool getTaskPool() {
+        return taskPool;
+    }
+
+    public void setTaskPool(TaskPool taskPool) {
+        this.taskPool = taskPool;
     }
 }

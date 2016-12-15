@@ -90,6 +90,16 @@
     <bean id="taskService" class="com.tongji409.website.services.TaskService" scope="prototype">
         <property name="taskDao" ref="taskDao"/>
         <property name="staticDefectDao" ref="staticDefectDao"/>
+        <property name="fileSystemService" ref="fileSysService"/>
+        <property name="taskPool" ref="taskQueue"/>
+    </bean>
+
+    <bean id="fileSysService" class="com.tongji409.website.services.FileSystemService">
+
+    </bean>
+
+    <bean id="taskQueue" class="com.tongji409.util.task.TaskPool">
+        <property name=""
     </bean>
 
     <bean id="staticDefectService" class="com.tongji409.website.services.StaticDefectService" scope="prototype">
