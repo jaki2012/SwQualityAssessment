@@ -7,7 +7,7 @@ import java.util.Date;
  */
 public class Task {
 
-    private int taskID;
+    private Integer taskID;
 
     private String projectName;
 
@@ -21,7 +21,7 @@ public class Task {
     //代码源文件下载的路径
     private String archivePath;
 
-    private int taskState;
+    private Integer taskState;
 
     public String getArchivePath() {
         return archivePath;
@@ -31,12 +31,12 @@ public class Task {
         this.archivePath = archivePath;
     }
 
-    public int getTaskID() {
-        return taskID;
+    public void setTaskID(Integer taskID) {
+        this.taskID = taskID;
     }
 
-    public void setTaskID(int taskID) {
-        this.taskID = taskID;
+    public Integer getTaskID() {
+        return taskID;
     }
 
     public String getProjectName() {

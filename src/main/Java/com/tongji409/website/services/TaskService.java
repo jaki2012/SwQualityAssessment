@@ -2,6 +2,7 @@ package com.tongji409.website.services;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.tongji409.DimensionCalculator;
 import com.tongji409.domain.StaticDefect;
@@ -112,10 +113,12 @@ public class TaskService extends ServiceSupport {
     }
 
     @SuppressWarnings("unchecked")
-    public void enqueueTask(Task newTask) {
+    public JSONObject enqueueTask(Task newTask) {
         newTask.setStartTime(new Date());
         //1:已完成 2:排队中 3:分析中 4:已失败
         newTask.setTaskState(2);
+        JSONObject metricsObj = new JSONObject();
+
         try {
             //向数据库添加新启动的作业
             int taskID = (int) taskDao.save(newTask);
@@ -126,15 +129,13 @@ public class TaskService extends ServiceSupport {
             this.resultdata.put("taskstate", savedTask.getTaskState());
 
             // 任务新建完成 交给任务池去处理接下来的工作
-            String path = "Test1";
-            String archive = "http://gitlab.lab-sse.cn/Novemser/Carpool/repository/archive.zip?ref=master";
+            String path = savedTask.getPath();
             // 1. 39维度分析
             // 下载
-            fileSystemService.saveArchiveToFile(path, archive);
+            fileSystemService.saveArchiveToFile(path, savedTask.getArchivePath());
 
             // 解压
             String pth = fileSystemService.unzipProject(path);
-
             // 分析
             // 如果缺少Jar包,请注释此行代码
             if (pth != null) {
@@ -142,24 +143,31 @@ public class TaskService extends ServiceSupport {
                 DimensionCalculator calculator = new DimensionCalculator();
                 calculator.calculateFiles(fileSystemService.listServerFiles(pth));
                 List<List<MetricsEvaluator>> projectMetricsList = calculator.getProjectMetrics();
+                metricsObj.put("SoftwareMetrics", projectMetricsList);
 
-                for (List<MetricsEvaluator> moduleMetricList : projectMetricsList) {
-                    for (MetricsEvaluator item : moduleMetricList) {
-                        System.out.println(item.moduleName);
-                    }
-                }
+//                for (List<MetricsEvaluator> moduleMetricList : projectMetricsList) {
+//                    for (MetricsEvaluator item : moduleMetricList) {
+//                        System.out.println(item.moduleName);
+//                    }
+//                }
             }
+
+            // 删除
+            java.io.File[] files = fileSystemService.listServerFiles(pth);
+            for (java.io.File file : files)
+                file.delete();
 
             // 2. 分析PMD缺陷
             // 如果你本机缺少PMD-JAR运行环境,请注释此行代码
 //            analysePMDDefects(newTask);
-            this.packageResultJson();
+            JSONObject normalResult = this.packageResultJson();
+            metricsObj.put("statJson", normalResult);
         } catch (Exception e) {
             log.error("创建任务", e);
 
             packageError("创建任务失败！\n原因:" + e.getMessage());
         }
-
+        return metricsObj;
     }
 
     @SuppressWarnings("all")
