@@ -38,11 +38,11 @@
         <property name="HALSTEAD_CONTENT"/>
         <property name="HALSTEAD_DIFFICULTY"/>
         <property name="HALSTEAD_EFFORT"/>
-        <property name="HALSTEAD_EFFORT_EST"/>
-        <property name="HALSETAD_LENGTH"/>
+        <property name="HALSTEAD_ERROR_SET"/>
+        <property name="HALSTEAD_LENGTH"/>
         <property name="HALSTEAD_LEVEL"/>
-        <property name="HALSTEAD_PROG_TIME"/>
-        <property name="HASTEAD_VOLUME"/>
+        <property name="HALSTEAD_PROGRAM_TIME"/>
+        <property name="HALSTEAD_VOLUME"/>
         <property name="NUM_OPERANDS"/>
         <property name="NUM_OPERATORS"/>
         <property name="NUM_UNIQUE_OPERANDS"/>

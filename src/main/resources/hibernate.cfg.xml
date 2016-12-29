@@ -5,7 +5,7 @@
     <session-factory name="">
         <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
         <!--JDBC数据库链接地址-->
-        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/SwQualityAssesment</property>
+        <property name="hibernate.connection.url">jdbc:mysql://115.159.126.118:3307/SwQualityAssesment</property>
         <!--数据库账号密码-->
         <property name="hibernate.connection.username">root</property>
         <property name="hibernate.connection.password">1234</property>

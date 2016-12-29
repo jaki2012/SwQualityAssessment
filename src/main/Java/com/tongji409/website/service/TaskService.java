@@ -5,6 +5,8 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.tongji409.DimensionCalculator;
+import com.tongji409.domain.Metrics;
+import com.tongji409.domain.Module;
 import com.tongji409.domain.StaticDefect;
 import com.tongji409.domain.Task;
 import com.tongji409.util.config.StaticConstant;
@@ -20,6 +22,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Method;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -36,7 +39,7 @@ public class TaskService extends ServiceSupport {
     private TaskPool taskPool;
     private MachineService machineService;
 
-    public void countTask(){
+    public void countTask() {
         try {
             List<Task> tasks = taskDao.getAll();
             this.resultdata.put("tasknums", tasks.size());
@@ -121,15 +124,17 @@ public class TaskService extends ServiceSupport {
         newTask.setTaskState(2);
         JSONObject metricsObj = new JSONObject();
 
+
         try {
             //向数据库添加新启动的作业
             int taskID = (int) taskDao.save(newTask);
             //设置返回参数
-            Task savedTask = (Task) taskDao.get(taskID);;
+            Task savedTask = (Task) taskDao.get(taskID);
+            ;
             String startTime = JSON.toJSONString(savedTask.getStartTime(), SerializerFeature.WriteDateUseDateFormat);
-            this.resultdata.put("taskid",taskID);
-            this.resultdata.put("starttime",dateQuotesTrim(startTime));
-            this.resultdata.put("taskstate",savedTask.getTaskState());
+            this.resultdata.put("taskid", taskID);
+            this.resultdata.put("starttime", dateQuotesTrim(startTime));
+            this.resultdata.put("taskstate", savedTask.getTaskState());
 
 //            this.sendAliMsg("石琨小姐",dateQuotesTrim(startTime),newTask.getProjectName());
             this.packageResultJson();
@@ -151,20 +156,48 @@ public class TaskService extends ServiceSupport {
                 java.io.File[] files = fileSystemService.listServerFiles(pth);
 
                 List<List<MetricsEvaluator>> projectMetricsList = calculator.getProjectMetrics();
+                JSONArray projectArray = new JSONArray();
                 for (List<MetricsEvaluator> evaluators : projectMetricsList) {
+                    JSONArray fileModuleArray = new JSONArray();
                     for (MetricsEvaluator evaluator : evaluators) {
+                        JSONObject moduleResult = new JSONObject();
                         evaluator.setModulePath(evaluator.getModulePath().replace(files[0].getAbsolutePath(), ""));
                         StringBuilder builder = new StringBuilder();
+                        Metrics metrics = new Metrics();
                         for (Map.Entry<Dimension, Double> entry : evaluator.dimensions.entrySet()) {
-                            builder.append(entry.getValue());
+                            Double value = entry.getValue();
+                            builder.append(value);
                             builder.append(" ");
+                            // 使用反射找到对应方法
+                            try {
+                                Method methodInt = metrics.getClass().getMethod("set" + entry.getKey(), int.class);
+                                int setterValue = value.intValue();
+                                methodInt.invoke(metrics, setterValue);
+                            } catch (NoSuchMethodException e) {
+                                Method methodFloat = metrics.getClass().getMethod("set" + entry.getKey(), float.class);
+                                float setterValue = value.floatValue();
+                                methodFloat.invoke(metrics, setterValue);
+                            }
 //                            String s = String.format("%-35s%-5s", entry.getKey(), entry.getValue());
 //                            System.out.println(s);
                         }
                         hasDefect = machineService.CallPython(builder.toString());
+                        // 保存模块
+                        Module module = new Module();
+                        module.setDefective(hasDefect);
+                        module.setModuleName(evaluator.moduleName);
+                        int moduleId = (int) taskDao.save(module);
+                        // 保存维度
+                        metrics.setModuleID(moduleId);
+                        int metricsId = (int) taskDao.save(metrics);
+                        moduleResult.put("moduleMetadata", module);
+                        moduleResult.put("metricsData", metrics);
+                        moduleResult.put("path", evaluator.getModulePath());
+                        fileModuleArray.add(moduleResult);
                     }
+                    projectArray.add(fileModuleArray);
                 }
-                metricsObj.put("SoftwareMetrics", projectMetricsList);
+                metricsObj.put("SoftwareMetrics", projectArray);
             }
 
             // 删除
@@ -213,13 +246,12 @@ public class TaskService extends ServiceSupport {
         packageError("用户尚未登陆,无法进行此操作!");
     }
 
+    public TaskDao getTaskDao() {
+        return taskDao;
+    }
 
     public void setTaskDao(TaskDao taskDao) {
         this.taskDao = taskDao;
-    }
-
-    public TaskDao getTaskDao() {
-        return taskDao;
     }
 
     public StaticDefectDao getStaticDefectDao() {

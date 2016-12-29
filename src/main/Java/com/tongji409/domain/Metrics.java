@@ -28,6 +28,8 @@ public class Metrics {
 
     private int CONDITION_COUNT;
 
+    private int HALSTEAD_ERROR_SET;
+
     private int CYCLOMATIC_COMPLEXITY;
 
     private float CYCLOMATIC_DENSITY;
@@ -74,13 +76,11 @@ public class Metrics {
 
     private float HALSTEAD_EFFORT_EST;
 
-    private int HALSETAD_LENGTH;
-
     private float HALSTEAD_LEVEL;
 
-    private float HALSTEAD_PROG_TIME;
+    private float HALSTEAD_VOLUME;
 
-    private float HASTEAD_VOLUME;
+    private int HALSTEAD_LENGTH;
 
     //运算元的个数
     private int NUM_OPERANDS;
@@ -93,6 +93,32 @@ public class Metrics {
 
     //不重复运算符的个数
     private int NUM_UNIQUE_OPERATORS;
+
+    private float HALSTEAD_PROGRAM_TIME;
+
+    public float getHALSTEAD_PROGRAM_TIME() {
+        return HALSTEAD_PROGRAM_TIME;
+    }
+
+    public void setHALSTEAD_PROGRAM_TIME(float HALSTEAD_PROGRAM_TIME) {
+        this.HALSTEAD_PROGRAM_TIME = HALSTEAD_PROGRAM_TIME;
+    }
+
+    public int getHALSTEAD_LENGTH() {
+        return HALSTEAD_LENGTH;
+    }
+
+    public void setHALSTEAD_LENGTH(int HALSTEAD_LENGTH) {
+        this.HALSTEAD_LENGTH = HALSTEAD_LENGTH;
+    }
+
+    public int getHALSTEAD_ERROR_SET() {
+        return HALSTEAD_ERROR_SET;
+    }
+
+    public void setHALSTEAD_ERROR_SET(int HALSTEAD_ERROR_SET) {
+        this.HALSTEAD_ERROR_SET = HALSTEAD_ERROR_SET;
+    }
 
     public int getId() {
         return id;
@@ -358,14 +384,6 @@ public class Metrics {
         this.HALSTEAD_EFFORT_EST = HALSTEAD_EFFORT_EST;
     }
 
-    public int getHALSETAD_LENGTH() {
-        return HALSETAD_LENGTH;
-    }
-
-    public void setHALSETAD_LENGTH(int HALSETAD_LENGTH) {
-        this.HALSETAD_LENGTH = HALSETAD_LENGTH;
-    }
-
     public float getHALSTEAD_LEVEL() {
         return HALSTEAD_LEVEL;
     }
@@ -374,20 +392,12 @@ public class Metrics {
         this.HALSTEAD_LEVEL = HALSTEAD_LEVEL;
     }
 
-    public float getHALSTEAD_PROG_TIME() {
-        return HALSTEAD_PROG_TIME;
+    public float getHALSTEAD_VOLUME() {
+        return HALSTEAD_VOLUME;
     }
 
-    public void setHALSTEAD_PROG_TIME(float HALSTEAD_PROG_TIME) {
-        this.HALSTEAD_PROG_TIME = HALSTEAD_PROG_TIME;
-    }
-
-    public float getHASTEAD_VOLUME() {
-        return HASTEAD_VOLUME;
-    }
-
-    public void setHASTEAD_VOLUME(float HASTEAD_VOLUME) {
-        this.HASTEAD_VOLUME = HASTEAD_VOLUME;
+    public void setHALSTEAD_VOLUME(float HASTEAD_VOLUME) {
+        this.HALSTEAD_VOLUME = HASTEAD_VOLUME;
     }
 
     public int getNUM_OPERANDS() {
