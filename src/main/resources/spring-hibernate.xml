@@ -90,6 +90,17 @@
     <bean id="taskService" class="com.tongji409.website.service.TaskService" scope="prototype">
         <property name="taskDao" ref="taskDao"/>
         <property name="staticDefectDao" ref="staticDefectDao"/>
+        <property name="fileSystemService" ref="fileSysService"/>
+        <property name="taskPool" ref="taskQueue"/>
+    </bean>
+
+    <bean id="fileSysService" class="com.tongji409.website.service.FileSystemService">
+
+    </bean>
+
+    <bean id="taskQueue" class="com.tongji409.util.task.TaskPool">
+        <property name="corePoolSize" value="10"/>
+        <property name="maximumPoolSize" value="1000"/>
     </bean>
 
     <bean id="staticDefectService" class="com.tongji409.website.service.StaticDefectService" scope="prototype">
@@ -139,9 +150,10 @@
             <tx:method name="get*" propagation="REQUIRED" />
             <!--service层封装事务,每个方法都需要符合此处method的命名规则-->
             <tx:method name="start*" propagation="REQUIRED"/>
+            <tx:method name="enqueue*" propagation="REQUIRED"/>
             <!--<tx:method name="start*" propagation="REQUIRED" read-only="false" rollback-for="java.lang.Exception" />-->
             <tx:method name="analyse*" propagation="REQUIRED"/>
-            <tx:method name="*" read-only="true" />
+            <tx:method name="*" read-only="false" />
         </tx:attributes>
     </tx:advice>
 
