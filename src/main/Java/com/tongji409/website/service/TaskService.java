@@ -127,7 +127,7 @@ public class TaskService extends ServiceSupport {
             this.resultdata.put("starttime",dateQuotesTrim(startTime));
             this.resultdata.put("taskstate",savedTask.getTaskState());
 
-            this.sendAliMsg("石琨小姐",dateQuotesTrim(startTime),newTask.getProjectName());
+//            this.sendAliMsg("石琨小姐",dateQuotesTrim(startTime),newTask.getProjectName());
             this.packageResultJson();
 
             // 任务新建完成 交给任务池去处理接下来的工作
