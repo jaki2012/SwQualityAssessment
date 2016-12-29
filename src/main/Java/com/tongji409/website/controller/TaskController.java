@@ -35,7 +35,7 @@ public class TaskController extends BaseDispatcher {
         return mv;
     }
 
-    //    @RequestMapping(value = "/count", method = RequestMethod.GET)
+//    @RequestMapping(value = "/count", method = RequestMethod.GET)
 //    public ModelAndView count() {
 //
 //        int c = service.taskCount();
@@ -45,8 +45,8 @@ public class TaskController extends BaseDispatcher {
 //        mv.setViewName("task");
 //        return mv;
 //    }
-    //返回所有任务列表
 
+    //返回所有任务列表
     @RequestMapping(value = "/tasks", method = RequestMethod.GET, produces="text/html;charset=UTF-8")
     @Authorization
     public String getTasks() {
@@ -59,12 +59,6 @@ public class TaskController extends BaseDispatcher {
             taskService.getTasks();
         return taskService.getResultJson();
     }
-
-//    @RequestMapping(value = "/task", method = RequestMethod.POST)
-//    public @ResponseBody String addTaskPost(@ModelAttribute("task")Task task) {
-//        taskService.addTask(task);
-//        return taskService.getResultJson();
-//    }
 
     //返回任务数量
     @RequestMapping(value = "/task/nums",  method = RequestMethod.GET)
@@ -89,7 +83,6 @@ public class TaskController extends BaseDispatcher {
 
     //RestfulAPI Body Json形式请求
     @RequestMapping(value = "/task", method = RequestMethod.POST)
-//    @Transactional(readOnly = true)
     public JSONObject startTask(@RequestBody Task newTask) {
         taskService.setFuncname("/enqueueTask");
         taskService.setLog(this.log);
