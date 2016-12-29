@@ -30,6 +30,10 @@ public class FileSystemService extends ServiceSupport {
 
     private String serverFileRootPath = "F:\\409\\";
 
+    public String getServerFileRootPath() {
+        return serverFileRootPath;
+    }
+
     /***
      * 把文件从指定URL下载下来
      * 下载的文件首先会暂时以.tmp文件存储，如果下载成功则会重命名为正常文件名

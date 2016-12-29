@@ -12,14 +12,17 @@ import com.tongji409.util.task.TaskPool;
 import com.tongji409.website.dao.StaticDefectDao;
 import com.tongji409.website.dao.TaskDao;
 import com.tongji409.website.service.support.ServiceSupport;
+import metrics.Dimension;
 import metrics.MetricsEvaluator;
-
+import org.apache.commons.io.FileUtils;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by lijiechu on 16/11/15.
@@ -31,6 +34,7 @@ public class TaskService extends ServiceSupport {
     private StaticDefectDao staticDefectDao;
     private FileSystemService fileSystemService;
     private TaskPool taskPool;
+    private MachineService machineService;
 
     public void countTask(){
         try {
@@ -141,17 +145,32 @@ public class TaskService extends ServiceSupport {
             // 分析
             // 如果缺少Jar包,请注释此行代码
             if (pth != null) {
+                boolean hasDefect = false;
                 DimensionCalculator calculator = new DimensionCalculator();
                 calculator.calculateFiles(fileSystemService.listServerFiles(pth));
+                java.io.File[] files = fileSystemService.listServerFiles(pth);
+
                 List<List<MetricsEvaluator>> projectMetricsList = calculator.getProjectMetrics();
+                for (List<MetricsEvaluator> evaluators : projectMetricsList) {
+                    for (MetricsEvaluator evaluator : evaluators) {
+                        evaluator.setModulePath(evaluator.getModulePath().replace(files[0].getAbsolutePath(), ""));
+                        StringBuilder builder = new StringBuilder();
+                        for (Map.Entry<Dimension, Double> entry : evaluator.dimensions.entrySet()) {
+                            builder.append(entry.getValue());
+                            builder.append(" ");
+//                            String s = String.format("%-35s%-5s", entry.getKey(), entry.getValue());
+//                            System.out.println(s);
+                        }
+                        hasDefect = machineService.CallPython(builder.toString());
+                    }
+                }
                 metricsObj.put("SoftwareMetrics", projectMetricsList);
             }
 
             // 删除
             java.io.File[] files = fileSystemService.listServerFiles(pth);
-            for (java.io.File file : files)
-                file.delete();
-
+            FileUtils.deleteDirectory(new File(files[0].getParent()));
+            FileUtils.deleteDirectory(new File(fileSystemService.getServerFileRootPath() + path + "_dir"));
             // 2. 分析PMD缺陷
             // 如果你本机缺少PMD-JAR运行环境,请注释此行代码
 //            analysePMDDefects(newTask);
@@ -225,5 +244,13 @@ public class TaskService extends ServiceSupport {
 
     public void setFileSystemService(FileSystemService fileSystemService) {
         this.fileSystemService = fileSystemService;
+    }
+
+    public MachineService getMachineService() {
+        return machineService;
+    }
+
+    public void setMachineService(MachineService machineService) {
+        this.machineService = machineService;
     }
 }

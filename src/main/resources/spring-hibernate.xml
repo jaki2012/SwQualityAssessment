@@ -92,12 +92,16 @@
         <property name="staticDefectDao" ref="staticDefectDao"/>
         <property name="fileSystemService" ref="fileSysService"/>
         <property name="taskPool" ref="taskQueue"/>
+        <property name="machineService" ref="machineLearningService"/>
     </bean>
 
     <bean id="fileSysService" class="com.tongji409.website.service.FileSystemService">
 
     </bean>
 
+    <bean id="machineLearningService" class="com.tongji409.website.service.MachineService">
+
+    </bean>
     <bean id="taskQueue" class="com.tongji409.util.task.TaskPool">
         <property name="corePoolSize" value="10"/>
         <property name="maximumPoolSize" value="1000"/>
