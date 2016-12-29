@@ -2,6 +2,11 @@ package com.tongji409.website.service.support;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.taobao.api.ApiException;
+import com.taobao.api.DefaultTaobaoClient;
+import com.taobao.api.TaobaoClient;
+import com.taobao.api.request.AlibabaAliqinFcSmsNumSendRequest;
+import com.taobao.api.response.AlibabaAliqinFcSmsNumSendResponse;
 import com.tongji409.util.config.StaticConstant;
 import com.tongji409.util.log.DLogger;
 import com.tongji409.util.tools.Tools;
@@ -264,6 +269,38 @@ public  class ServiceSupport {//} implements ServiceInterface {
             return "error date format";
         }
         return date.substring(1,date.length()-1);
+    }
+
+    /**
+     * 阿里发送短信接口
+     *
+     * @param name
+     * @param projectName
+     * @param date
+     * @param @return date
+     * @Title: dateQuotesTrim
+     * @author: lijiechu
+     */
+    protected void sendAliMsg(String name, String date, String projectName){
+        String url = "http://gw.api.taobao.com/router/rest";
+        String appkey = "23563986";
+        String secret = "c338161bfeab8ac71afbf29e62a2b1fc";
+        String shortenDate = date.split(" ")[1];
+        TaobaoClient client = new DefaultTaobaoClient(url, appkey, secret);
+        AlibabaAliqinFcSmsNumSendRequest req = new AlibabaAliqinFcSmsNumSendRequest();
+        req.setExtend("123456");
+        req.setSmsType("normal");
+        req.setSmsFreeSignName("同济众包");
+        req.setSmsParamString("{\"name\":\""+name+"\",\"time\":\""+shortenDate+"\",\"project\":\""+projectName+"\"}");
+        req.setRecNum("18217769863");
+        req.setSmsTemplateCode("SMS_33890131");
+        AlibabaAliqinFcSmsNumSendResponse rsp = null;
+        try {
+            rsp = client.execute(req);
+        } catch (ApiException e) {
+            e.printStackTrace();
+        }
+        System.out.println(rsp.getBody());
     }
 
 

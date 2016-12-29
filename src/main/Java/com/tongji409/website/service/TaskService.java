@@ -108,6 +108,7 @@ public class TaskService extends ServiceSupport{
             //分析PMD缺陷
             //如果你本机缺少PMD-JAR运行环境,请注释此行代码
             analysePMDDefects(newTask);
+            this.sendAliMsg("石琨小姐",dateQuotesTrim(startTime),newTask.getProjectName());
             this.packageResultJson();
         } catch (Exception e) {
             log.error("创建任务", e);

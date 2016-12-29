@@ -64,6 +64,7 @@ public class TaskController extends BaseDispatcher{
 //        return taskService.getResultJson();
 //    }
 
+    //返回任务数量
     @RequestMapping(value = "/task/nums",  method = RequestMethod.GET)
     public @ResponseBody String showAllTask() {
         taskService.setFuncname("/getTaskNums");
