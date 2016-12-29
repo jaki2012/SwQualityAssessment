@@ -57,6 +57,7 @@
                 <value>HibernateEntitiesMapping/McCabeMetrics.hbm.xml</value>
                 <value>HibernateEntitiesMapping/StaticDefect.hbm.xml</value>
                 <value>HibernateEntitiesMapping/User.hbm.xml</value>
+                <value>HibernateEntitiesMapping/Metrics.hbm.xml</value>
             </list>
         </property>
         <property name="hibernateProperties">
