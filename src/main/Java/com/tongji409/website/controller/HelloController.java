@@ -1,4 +1,4 @@
-package com.tongji409.website.controllers;
+package com.tongji409.website.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;

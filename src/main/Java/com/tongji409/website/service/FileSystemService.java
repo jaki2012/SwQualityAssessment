@@ -1,6 +1,6 @@
-package com.tongji409.website.services;
+package com.tongji409.website.service;
 
-import com.tongji409.website.services.support.ServiceSupport;
+import com.tongji409.website.service.support.ServiceSupport;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.context.annotation.ComponentScan;
@@ -28,7 +28,7 @@ import java.util.zip.ZipInputStream;
 @ComponentScan
 public class FileSystemService extends ServiceSupport {
 
-    private String serverFileRootPath = "F:\\409\\";
+    private String serverFileRootPath = "/Users/lijiechu/Documents/scode/";
 
     /***
      * 把文件从指定URL下载下来
@@ -53,7 +53,7 @@ public class FileSystemService extends ServiceSupport {
 
         fileFolder.mkdirs();
 
-        File saveFile = new File(serverFileRootPath + fileName + "_dir\\" + fileName + ".tmp");
+        File saveFile = new File(serverFileRootPath + fileName + "_dir/" + fileName + ".tmp");
 
         if (saveFile.exists())
             saveFile.delete();
@@ -88,7 +88,7 @@ public class FileSystemService extends ServiceSupport {
 //            offset += count;
 //        }
         // If succeed, change to the desired name
-        File dest = new File(serverFileRootPath + fileName + "_dir\\" + fileName + ".zip");
+        File dest = new File(serverFileRootPath + fileName + "_dir/" + fileName + ".zip");
         if (dest.exists())
             dest.delete();
 

@@ -1,4 +1,4 @@
-package com.tongji409.website.services;
+package com.tongji409.website.service;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -11,8 +11,9 @@ import com.tongji409.util.config.StaticConstant;
 import com.tongji409.util.task.TaskPool;
 import com.tongji409.website.dao.StaticDefectDao;
 import com.tongji409.website.dao.TaskDao;
-import com.tongji409.website.services.support.ServiceSupport;
+import com.tongji409.website.service.support.ServiceSupport;
 import metrics.MetricsEvaluator;
+
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -31,21 +32,17 @@ public class TaskService extends ServiceSupport {
     private FileSystemService fileSystemService;
     private TaskPool taskPool;
 
+    public void countTask(){
+        try {
+            List<Task> tasks = taskDao.getAll();
+            this.resultdata.put("tasknums", tasks.size());
+            packageResultJson();
+        } catch (Exception e) {
+            log.error("获取任务数量", e);
+            packageError("获取任务数量失败！\n原因:" + e.getMessage());
+        }
+    }
 
-    //    public int taskCount(){
-//        return taskDao.getAllUser().size();
-//    }
-//
-//    public void addTask(){
-//        try {
-//            taskDao.addTask();
-//            this.packageResultJson();
-//        } catch (Exception e) {
-//            log.error("添加任务", e);
-//
-//            packageError("添加任务失败！\n原因:" + e.getMessage());
-//        }
-//    }
 
 //    public String getAllTasks() {
 //        return JSONArray.toJSONString(taskDao.getAllTasks());
@@ -76,6 +73,7 @@ public class TaskService extends ServiceSupport {
             packageError("获取所有任务失败！\n原因:" + e.getMessage());
         }
     }
+
 
 //    public void addTask(int id){
 //        try {
@@ -123,10 +121,14 @@ public class TaskService extends ServiceSupport {
             //向数据库添加新启动的作业
             int taskID = (int) taskDao.save(newTask);
             //设置返回参数
-            Task savedTask = (Task) taskDao.get(taskID);
-            this.resultdata.put("taskid", taskID);
-            this.resultdata.put("starttime", savedTask.getStartTime());
-            this.resultdata.put("taskstate", savedTask.getTaskState());
+            Task savedTask = (Task) taskDao.get(taskID);;
+            String startTime = JSON.toJSONString(savedTask.getStartTime(), SerializerFeature.WriteDateUseDateFormat);
+            this.resultdata.put("taskid",taskID);
+            this.resultdata.put("starttime",dateQuotesTrim(startTime));
+            this.resultdata.put("taskstate",savedTask.getTaskState());
+
+            this.sendAliMsg("石琨小姐",dateQuotesTrim(startTime),newTask.getProjectName());
+            this.packageResultJson();
 
             // 任务新建完成 交给任务池去处理接下来的工作
             String path = savedTask.getPath();
@@ -155,6 +157,7 @@ public class TaskService extends ServiceSupport {
 //            analysePMDDefects(newTask);
             JSONObject normalResult = this.packageResultJson();
             metricsObj.put("statJson", normalResult);
+
         } catch (Exception e) {
             log.error("创建任务", e);
 
@@ -181,7 +184,6 @@ public class TaskService extends ServiceSupport {
             staticDefect.setModuleID(moduleID++);
             staticDefect.setLocation(analyseResult[1]);
             staticDefect.setDescription(analyseResult[2].trim());
-            //staticDefectDao.addStaticDefect(staticDefect);
             staticDefectDao.save(staticDefect);
             System.out.println(output);
         }

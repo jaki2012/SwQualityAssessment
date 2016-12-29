@@ -1,4 +1,4 @@
-package com.tongji409.website.controllers;
+package com.tongji409.website.controller;
 
 /**
  * Created by lijiechu on 16/11/15.
@@ -7,9 +7,9 @@ package com.tongji409.website.controllers;
 import com.alibaba.fastjson.JSONObject;
 import com.tongji409.domain.Task;
 import com.tongji409.util.token.annotation.Authorization;
-import com.tongji409.website.controllers.Support.BaseDispatcher;
-import com.tongji409.website.services.StaticDefectService;
-import com.tongji409.website.services.TaskService;
+import com.tongji409.website.service.StaticDefectService;
+import com.tongji409.website.service.TaskService;
+import com.tongji409.website.controller.Support.BaseDispatcher;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -46,7 +46,8 @@ public class TaskController extends BaseDispatcher {
 //        return mv;
 //    }
     //返回所有任务列表
-    @RequestMapping(value = "/tasks", method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
+
+    @RequestMapping(value = "/tasks", method = RequestMethod.GET, produces="text/html;charset=UTF-8")
     @Authorization
     public String getTasks() {
         taskService.setFuncname("/getTasks");
@@ -65,10 +66,14 @@ public class TaskController extends BaseDispatcher {
 //        return taskService.getResultJson();
 //    }
 
-//    @RequestMapping(value = "/tasks")
-//    public @ResponseBody String showAllTask() {
-//        return taskService.getAllTasks();
-//    }
+    //返回任务数量
+    @RequestMapping(value = "/task/nums",  method = RequestMethod.GET)
+    public @ResponseBody String showAllTask() {
+        taskService.setFuncname("/getTaskNums");
+        taskService.setLog(log);
+        taskService.countTask();
+        return taskService.getResultJson();
+    }
 
     //RestfulAPI 参数列表形式请求
     @RequestMapping(value = "/task/{name}/{version}/{path}", method = RequestMethod.POST)

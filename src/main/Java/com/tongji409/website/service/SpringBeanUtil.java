@@ -1,4 +1,4 @@
-package com.tongji409.website.services;
+package com.tongji409.website.service;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;

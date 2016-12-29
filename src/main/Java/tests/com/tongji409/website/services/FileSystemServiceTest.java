@@ -1,12 +1,13 @@
 package com.tongji409.website.services;
 
+import com.tongji409.DimensionCalculator;
+import com.tongji409.website.service.FileSystemService;
 import metrics.MetricsEvaluator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import com.tongji409.*;
 
 import java.util.List;
 
