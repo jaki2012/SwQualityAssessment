@@ -139,17 +139,10 @@ public class TaskService extends ServiceSupport {
             // 分析
             // 如果缺少Jar包,请注释此行代码
             if (pth != null) {
-
                 DimensionCalculator calculator = new DimensionCalculator();
                 calculator.calculateFiles(fileSystemService.listServerFiles(pth));
                 List<List<MetricsEvaluator>> projectMetricsList = calculator.getProjectMetrics();
                 metricsObj.put("SoftwareMetrics", projectMetricsList);
-
-//                for (List<MetricsEvaluator> moduleMetricList : projectMetricsList) {
-//                    for (MetricsEvaluator item : moduleMetricList) {
-//                        System.out.println(item.moduleName);
-//                    }
-//                }
             }
 
             // 删除
