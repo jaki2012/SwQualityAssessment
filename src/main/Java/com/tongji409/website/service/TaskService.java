@@ -10,6 +10,8 @@ import com.tongji409.domain.Module;
 import com.tongji409.domain.StaticDefect;
 import com.tongji409.domain.Task;
 import com.tongji409.util.config.StaticConstant;
+import com.tongji409.util.config.TaskStatus;
+import com.tongji409.util.task.HasSessionThread;
 import com.tongji409.util.task.TaskPool;
 import com.tongji409.website.dao.StaticDefectDao;
 import com.tongji409.website.dao.TaskDao;
@@ -17,6 +19,11 @@ import com.tongji409.website.service.support.ServiceSupport;
 import metrics.Dimension;
 import metrics.MetricsEvaluator;
 import org.apache.commons.io.FileUtils;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -71,7 +78,6 @@ public class TaskService extends ServiceSupport {
         String strString = JSON.toJSONString(tasks, SerializerFeature.WriteDateUseDateFormat);
         JSONArray jsonArrayTasks = JSONArray.parseArray(strString);
         this.resultdata.put("result", jsonArrayTasks);
-        this.resultdata.put("chtest", "我爱你");
 
         try {
             this.packageResultJson();
@@ -121,7 +127,8 @@ public class TaskService extends ServiceSupport {
     public JSONObject enqueueTask(Task newTask) {
         newTask.setStartTime(new Date());
         //1:已完成 2:排队中 3:分析中 4:已失败
-        newTask.setTaskState(2);
+        newTask.setTaskState(TaskStatus.ENQUEUING.getState());
+        newTask.setTaskStateDesc(TaskStatus.ENQUEUING.getDescription());
         JSONObject metricsObj = new JSONObject();
 
 
@@ -135,78 +142,21 @@ public class TaskService extends ServiceSupport {
             this.resultdata.put("taskid", taskID);
             this.resultdata.put("starttime", dateQuotesTrim(startTime));
             this.resultdata.put("taskstate", savedTask.getTaskState());
-
+            this.resultdata.put("taskstatedesc", savedTask.getTaskStateDesc());
 //            this.sendAliMsg("石琨小姐",dateQuotesTrim(startTime),newTask.getProjectName());
             this.packageResultJson();
 
             // 任务新建完成 交给任务池去处理接下来的工作
-            String path = savedTask.getPath();
-            // 1. 39维度分析
-            // 下载
-            fileSystemService.saveArchiveToFile(path, savedTask.getArchivePath());
+            taskPool.enTask(savedTask);
+            // 代码优化 设计模式 设计原则
+            HasSessionThread thread = new HasSessionThread();
+            thread.setFileSystemService(fileSystemService);
+            thread.setMachineService(machineService);
+            thread.setSessionFactory(taskDao.makeNewSession());
+            thread.setSavedTask(savedTask);
+            thread.setTaskDao(taskDao);
+            taskPool.getTaskExecutor().execute(thread);
 
-            // 解压
-            String pth = fileSystemService.unzipProject(path);
-            // 分析
-            // 如果缺少Jar包,请注释此行代码
-            if (pth != null) {
-                boolean hasDefect = false;
-                DimensionCalculator calculator = new DimensionCalculator();
-                calculator.calculateFiles(fileSystemService.listServerFiles(pth));
-                java.io.File[] files = fileSystemService.listServerFiles(pth);
-
-                List<List<MetricsEvaluator>> projectMetricsList = calculator.getProjectMetrics();
-                JSONArray projectArray = new JSONArray();
-                for (List<MetricsEvaluator> evaluators : projectMetricsList) {
-                    JSONArray fileModuleArray = new JSONArray();
-                    for (MetricsEvaluator evaluator : evaluators) {
-                        JSONObject moduleResult = new JSONObject();
-                        evaluator.setModulePath(evaluator.getModulePath().replace(files[0].getAbsolutePath(), ""));
-                        StringBuilder builder = new StringBuilder();
-                        Metrics metrics = new Metrics();
-                        for (Map.Entry<Dimension, Double> entry : evaluator.dimensions.entrySet()) {
-                            Double value = entry.getValue();
-                            builder.append(value);
-                            builder.append(" ");
-                            // 使用反射找到对应方法
-                            try {
-                                Method methodInt = metrics.getClass().getMethod("set" + entry.getKey(), int.class);
-                                int setterValue = value.intValue();
-                                methodInt.invoke(metrics, setterValue);
-                            } catch (NoSuchMethodException e) {
-                                Method methodFloat = metrics.getClass().getMethod("set" + entry.getKey(), float.class);
-                                float setterValue = value.floatValue();
-                                methodFloat.invoke(metrics, setterValue);
-                            }
-//                            String s = String.format("%-35s%-5s", entry.getKey(), entry.getValue());
-//                            System.out.println(s);
-                        }
-                        hasDefect = machineService.CallPython(builder.toString());
-                        // 保存模块
-                        Module module = new Module();
-                        module.setDefective(hasDefect);
-                        module.setModuleName(evaluator.moduleName);
-                        int moduleId = (int) taskDao.save(module);
-                        // 保存维度
-                        metrics.setModuleID(moduleId);
-                        int metricsId = (int) taskDao.save(metrics);
-                        moduleResult.put("moduleMetadata", module);
-                        moduleResult.put("metricsData", metrics);
-                        moduleResult.put("path", evaluator.getModulePath());
-                        fileModuleArray.add(moduleResult);
-                    }
-                    projectArray.add(fileModuleArray);
-                }
-                metricsObj.put("SoftwareMetrics", projectArray);
-            }
-
-            // 删除
-            java.io.File[] files = fileSystemService.listServerFiles(pth);
-            FileUtils.deleteDirectory(new File(files[0].getParent()));
-            FileUtils.deleteDirectory(new File(fileSystemService.getServerFileRootPath() + path + "_dir"));
-            // 2. 分析PMD缺陷
-            // 如果你本机缺少PMD-JAR运行环境,请注释此行代码
-//            analysePMDDefects(newTask);
             JSONObject normalResult = this.packageResultJson();
             metricsObj.put("statJson", normalResult);
 

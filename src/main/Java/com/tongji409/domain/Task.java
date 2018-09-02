@@ -23,6 +23,8 @@ public class Task {
 
     private Integer taskState;
 
+    private String taskStateDesc;
+
     public String getArchivePath() {
         return archivePath;
     }
@@ -85,5 +87,13 @@ public class Task {
 
     public void setTaskState(int taskState) {
         this.taskState = taskState;
+    }
+
+    public String getTaskStateDesc() {
+        return taskStateDesc;
+    }
+
+    public void setTaskStateDesc(String taskStateDesc) {
+        this.taskStateDesc = taskStateDesc;
     }
 }

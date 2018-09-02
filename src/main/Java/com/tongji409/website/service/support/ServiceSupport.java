@@ -123,7 +123,7 @@ public class ServiceSupport {//} implements ServiceInterface {
      * @author: Cogent Cui
      */
     public final JSONObject packageError() {
-        return packageResultJson(StaticConstant.RELUST_ERROR, "服务器繁忙，请稍候再试");
+        return packageResultJson(StaticConstant.RESULT_ERROR, "服务器繁忙，请稍候再试");
     }
 
     /**
@@ -134,7 +134,7 @@ public class ServiceSupport {//} implements ServiceInterface {
      * @author: Cogent Cui
      */
     public final JSONObject packageError(String errmsg) {
-        return packageResultJson(StaticConstant.RELUST_ERROR, errmsg);
+        return packageResultJson(StaticConstant.RESULT_ERROR, errmsg);
     }
 
     /**

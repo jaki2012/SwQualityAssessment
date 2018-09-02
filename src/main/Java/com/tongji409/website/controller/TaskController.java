@@ -6,13 +6,17 @@ package com.tongji409.website.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.tongji409.domain.Task;
+import com.tongji409.util.log.DLogger;
 import com.tongji409.util.token.annotation.Authorization;
 import com.tongji409.website.service.StaticDefectService;
 import com.tongji409.website.service.TaskService;
 import com.tongji409.website.controller.Support.BaseDispatcher;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import sun.jvm.hotspot.debugger.windbg.DLL;
 
 import javax.annotation.Resource;
 
@@ -20,6 +24,7 @@ import javax.annotation.Resource;
 @Scope("prototype")
 @RequestMapping("/api")
 public class TaskController extends BaseDispatcher {
+
 
     @Resource(name = "taskService")
     private TaskService taskService;

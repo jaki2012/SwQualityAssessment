@@ -4,6 +4,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 
 import com.tongji409.domain.Task;
+import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
@@ -14,6 +15,9 @@ import java.util.List;
  */
 
 public interface TaskDao extends BaseDao {
+
+    SessionFactory makeNewSession();
+
 
 
 //    public List<Task> getAllUser() {

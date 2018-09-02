@@ -28,6 +28,8 @@ public class BaseDaoImpl<T,PK extends Serializable> extends HibernateDaoSupport 
 //        return sessionFactory;
 //    }
 
+
+
     //精简代码 获取session的函数
     public Session getSession(){
 //        在使用HibernateDaoSupport前获取session的办法

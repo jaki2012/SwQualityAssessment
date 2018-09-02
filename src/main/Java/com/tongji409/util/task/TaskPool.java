@@ -1,6 +1,8 @@
 package com.tongji409.util.task;
 
 import com.tongji409.domain.Task;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -16,6 +18,7 @@ import java.util.concurrent.TimeUnit;
  */
 
 public class TaskPool {
+
     private int corePoolSize;
 
     private int maximumPoolSize;
@@ -29,6 +32,7 @@ public class TaskPool {
     }
 
     public boolean enTask(Task task) {
+
         return taskQueue.add(task);
     }
 
@@ -71,4 +75,6 @@ public class TaskPool {
     public void setTaskExecutor(ThreadPoolExecutor taskExecutor) {
         this.taskExecutor = taskExecutor;
     }
+
+
 }

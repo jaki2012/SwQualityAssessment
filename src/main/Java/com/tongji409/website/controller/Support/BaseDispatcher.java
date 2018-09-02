@@ -21,7 +21,6 @@ import java.util.Set;
  */
 
 
-@Controller
 //@RequestMapping(value = "/ws")
 @Scope("prototype")
 public abstract class BaseDispatcher {

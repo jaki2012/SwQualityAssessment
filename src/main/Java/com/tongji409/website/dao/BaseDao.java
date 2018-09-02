@@ -1,5 +1,7 @@
 package com.tongji409.website.dao;
 
+import org.hibernate.Session;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -48,6 +50,5 @@ public interface BaseDao<T, PK extends Serializable> {
      * @return List<T>
      */
     public List<T> getAll();
-
 
 }

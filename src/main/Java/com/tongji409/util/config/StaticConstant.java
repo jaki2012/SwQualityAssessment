@@ -35,7 +35,7 @@ public class StaticConstant {
     /****************************** 数据结果码BEGIN ***************************************/
 
     public static final String RELUST_SUCC = "100";     // 成功
-    public static final String RELUST_ERROR = "299";    // 未知错误
+    public static final String RESULT_ERROR = "299";    // 未知错误
     public static final String RELUST_NOUSER = "298";   // 用户信息丢失
     public static final String RELUST_OUTAREA = "297";  // 超出覆盖范围
     public static final String RELUST_NONE = "296";     // 无符合条件的信息
