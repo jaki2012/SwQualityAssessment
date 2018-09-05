@@ -23,6 +23,7 @@ import javax.annotation.Resource;
 @RestController
 @Scope("prototype")
 @RequestMapping("/api")
+@CrossOrigin(origins = "*")
 public class TaskController extends BaseDispatcher {
 
 

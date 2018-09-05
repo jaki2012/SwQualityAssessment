@@ -6,6 +6,7 @@ import com.tongji409.DimensionCalculator;
 import com.tongji409.domain.Metrics;
 import com.tongji409.domain.Module;
 import com.tongji409.domain.Task;
+import com.tongji409.util.config.StaticConstant;
 import com.tongji409.util.config.TaskStatus;
 import com.tongji409.website.dao.TaskDao;
 import com.tongji409.website.service.FileSystemService;
@@ -20,7 +21,7 @@ import org.springframework.orm.hibernate5.SessionFactoryUtils;
 import org.springframework.orm.hibernate5.SessionHolder;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
-import java.io.File;
+import java.io.*;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
@@ -136,6 +137,25 @@ public class HasSessionThread extends Thread {
                     projectArray.add(fileModuleArray);
                 }
 //                metricsObj.put("SoftwareMetrics", projectArray);
+                // 3. sonarqube分析
+                SonarScannerTemplate sonarScannerTemplate = new SonarScannerTemplate(savedTask.getProjectVersion(),
+                        savedTask.getProjectName());
+                String propertiesContent = sonarScannerTemplate.constructProperties();
+                File propertiesFile = new File(files[0].getPath() + File.separator + "sonar-project.properties");
+                Writer out = new FileWriter(propertiesFile);
+                out.write(propertiesContent);
+                out.close();
+
+//                String cdCmd = "cd " + files[0].getPath();
+                String scanCmd = StaticConstant.SONAR_SCANNER_PATH + "sonar-scanner";
+//                Runtime.getRuntime().exec(cdCmd);
+                Process process = Runtime.getRuntime().exec(scanCmd, null, files[0]);
+                //Process process = Runtime.getRuntime().exec(" pmd -d /Users/lijiechu/Downloads/FileManager.java -f text -R /Users/lijiechu/Documents/pmd/pmd-java/target/classes/rulesets/java/comments.xml");
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+                String output = null;
+                while ((output = bufferedReader.readLine()) != null) {
+                    System.out.println(output);
+                }
             }
 
             // 删除
@@ -145,6 +165,7 @@ public class HasSessionThread extends Thread {
             // 2. 分析PMD缺陷
             // 如果你本机缺少PMD-JAR运行环境,请注释此行代码
 //            analysePMDDefects(newTask);
+
             // 任务完成
             // 合成方法 门面模式
             savedTask.setTaskState(TaskStatus.FINISHED.getState());
