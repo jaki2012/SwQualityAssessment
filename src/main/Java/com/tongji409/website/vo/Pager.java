@@ -60,13 +60,14 @@ public class Pager<T> {
             this.startPage = pageNumber - 2;
             this.endPage = pageNumber + 2;
 
-            if(this.startPage < 0) {
+            if(this.startPage <= 0) {
                 this.startPage = 1;
                 this.endPage = 5;
             }
 
             if(this.endPage > totalPage) {
-                this.startPage = this.totalPage - 5;
+                // -4才能正确地维系在5页这个区间段内
+                this.startPage = this.totalPage - 4;
                 this.endPage = totalPage;
             }
         }

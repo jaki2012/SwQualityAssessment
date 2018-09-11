@@ -102,6 +102,9 @@ public class HasSessionThread extends Thread {
                     JSONArray projectArray = new JSONArray();
 
                     for (List<MetricsEvaluator> evaluators : projectMetricsList) {
+                        if(evaluators.size() <=0 ) {
+                            continue;
+                        }
                         JSONArray fileModuleArray = new JSONArray();
                         int startIndex = evaluators.get(0).getModulePath().indexOf(pth) + (pth + "_dir").length();
                         String fileName = evaluators.get(0).getModulePath().substring(startIndex);
