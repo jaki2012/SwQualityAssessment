@@ -96,6 +96,10 @@ public class Metrics {
 
     private float HALSTEAD_PROGRAM_TIME;
 
+
+    //TODO: remove it and place it into a well place
+    private int taskID;
+
     public float getHALSTEAD_PROGRAM_TIME() {
         return HALSTEAD_PROGRAM_TIME;
     }
@@ -430,5 +434,13 @@ public class Metrics {
 
     public void setNUM_UNIQUE_OPERATORS(int NUM_UNIQUE_OPERATORS) {
         this.NUM_UNIQUE_OPERATORS = NUM_UNIQUE_OPERATORS;
+    }
+
+    public int getTaskID() {
+        return taskID;
+    }
+
+    public void setTaskID(int taskID) {
+        this.taskID = taskID;
     }
 }

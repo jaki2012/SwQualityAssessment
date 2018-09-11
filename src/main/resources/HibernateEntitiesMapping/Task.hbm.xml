@@ -7,6 +7,7 @@
         <id name="taskID">
             <generator class="native"/>
         </id>
+        <property name="userID"/>
         <property name="projectName"/>
         <property name="projectVersion"/>
         <property name="startTime"/>
@@ -15,5 +16,6 @@
         <property name="taskState"/>
         <property name="archivePath"/>
         <property name="taskStateDesc"/>
+        <property name="sonarqubeUrl"/>
     </class>
 </hibernate-mapping>

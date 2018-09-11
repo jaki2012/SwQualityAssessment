@@ -108,6 +108,9 @@ public class StaticConstant {
     public static final String PMD_JAR_PATH = "/Users/lijiechu/Documents/pmd-bin/pmd-bin-5.6.0-SNAPSHOT/bin/run.sh";
     public static final String PMD_JAVA_RULESETS_PATH = "/Users/lijiechu/Documents/pmd/pmd-java/target/classes/rulesets/java/";
     public static final String PYTHON_SCRIPT_PATH = "/ftp/www/python_yoko/ML/ML.py";
-    public static final String SONAR_SCANNER_PATH = "/Users/lijiechu/Documents/sonar-scanner/bin/";
+    public static final String SONARQUBE_URL_PREFIX = "http://120.79.15.205:9088/dashboard?id=";
+//    public static final String SONAR_SCANNER_PATH = "/Users/lijiechu/Documents/sonar-scanner/bin/";
+    public static final String SONAR_SCANNER_PATH = "/opt/sonar-scanner-3.2.0.1227-linux/bin/";
+
 
 }

@@ -9,6 +9,8 @@ public class Task {
 
     private Integer taskID;
 
+    private Integer userID;
+
     private String projectName;
 
     private String projectVersion;
@@ -24,6 +26,8 @@ public class Task {
     private Integer taskState;
 
     private String taskStateDesc;
+
+    private String sonarqubeUrl;
 
     public String getArchivePath() {
         return archivePath;
@@ -81,11 +85,11 @@ public class Task {
         this.path = path;
     }
 
-    public int getTaskState() {
+    public Integer getTaskState() {
         return taskState;
     }
 
-    public void setTaskState(int taskState) {
+    public void setTaskState(Integer taskState) {
         this.taskState = taskState;
     }
 
@@ -95,5 +99,21 @@ public class Task {
 
     public void setTaskStateDesc(String taskStateDesc) {
         this.taskStateDesc = taskStateDesc;
+    }
+
+    public Integer getUserID() {
+        return userID;
+    }
+
+    public void setUserID(Integer userID) {
+        this.userID = userID;
+    }
+
+    public String getSonarqubeUrl() {
+        return sonarqubeUrl;
+    }
+
+    public void setSonarqubeUrl(String sonarqubeUrl) {
+        this.sonarqubeUrl = sonarqubeUrl;
     }
 }

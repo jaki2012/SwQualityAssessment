@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 
-import javax.annotation.Resource;
 import java.io.Serializable;
 import java.util.List;
 
@@ -89,6 +88,6 @@ public class BaseDaoImpl<T,PK extends Serializable> extends HibernateDaoSupport 
 
     @Override
     public List<T> getAll(){
-        return (List<T>) getHibernateTemplate().loadAll(clazz);
+        return getHibernateTemplate().loadAll(clazz);
     }
 }

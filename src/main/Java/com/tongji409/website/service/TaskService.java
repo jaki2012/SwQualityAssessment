@@ -4,9 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.tongji409.DimensionCalculator;
 import com.tongji409.domain.Metrics;
-import com.tongji409.domain.Module;
 import com.tongji409.domain.StaticDefect;
 import com.tongji409.domain.Task;
 import com.tongji409.util.config.StaticConstant;
@@ -16,23 +14,13 @@ import com.tongji409.util.task.TaskPool;
 import com.tongji409.website.dao.StaticDefectDao;
 import com.tongji409.website.dao.TaskDao;
 import com.tongji409.website.service.support.ServiceSupport;
-import metrics.Dimension;
-import metrics.MetricsEvaluator;
-import org.apache.commons.io.FileUtils;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.TransactionSynchronizationManager;
+import com.tongji409.website.vo.MetricsInfo;
+import com.tongji409.website.vo.Pager;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.Method;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by lijiechu on 16/11/15.
@@ -49,7 +37,19 @@ public class TaskService extends ServiceSupport {
     public void countTask() {
         try {
             List<Task> tasks = taskDao.getAll();
+
             this.resultdata.put("tasknums", tasks.size());
+            packageResultJson();
+        } catch (Exception e) {
+            log.error("获取任务数量", e);
+            packageError("获取任务数量失败！\n原因:" + e.getMessage());
+        }
+    }
+
+    public void getTask(int taskId) {
+        try {
+            Task task = taskDao.getTaskById(taskId);
+            this.resultdata.put("result", task);
             packageResultJson();
         } catch (Exception e) {
             log.error("获取任务数量", e);
@@ -73,8 +73,15 @@ public class TaskService extends ServiceSupport {
         }
     }
 
-    public void getTasks() {
-        List<Task> tasks = taskDao.getAll();
+    public void getTasks(int userId) {
+//        List<Task> tasks = taskDao.getAll();
+        List<Task> tasks = taskDao.getTasksByUserId(userId);
+        tasks.sort(new Comparator<Task>() {
+            @Override
+            public int compare(Task o1, Task o2) {
+                return (int) (o2.getStartTime().getTime() - o1.getStartTime().getTime());
+            }
+        });
         String strString = JSON.toJSONString(tasks, SerializerFeature.WriteDateUseDateFormat);
         JSONArray jsonArrayTasks = JSONArray.parseArray(strString);
         this.resultdata.put("result", jsonArrayTasks);
@@ -191,6 +198,38 @@ public class TaskService extends ServiceSupport {
         }
     }
 
+    public JSONObject testJoin(int taskId, int pageNum, int pageSize) {
+        List<Object[]> rawMetricsInfos = taskDao.getMetricsInfoById(taskId);
+        List<HashMap<String, Object>> metricsInfo = new ArrayList<>();
+        String fileName = "";
+        HashMap<String, Object> map = null;
+        // 每个文件名 对应多个模块
+        // 数据库会按照文件名排序
+        for(Object[] rawMetricsInfo: rawMetricsInfos) {
+            if(!((String)rawMetricsInfo[2]).equals(fileName)) {
+                fileName = (String) rawMetricsInfo[2];
+                map = new HashMap<>();
+                metricsInfo.add(map);
+                map.put("filename", rawMetricsInfo[2]);
+                map.put("modules", new ArrayList<Metrics>() );
+            }
+            MetricsInfo mi = new MetricsInfo();
+            mi.setMetrics((Metrics)rawMetricsInfo[3]);
+            mi.setFileName(fileName);
+            mi.setDefective((boolean)rawMetricsInfo[1]);
+            mi.setModuleName((String)rawMetricsInfo[0]);
+            ((List)map.get("modules")).add(mi);
+        }
+
+        Pager<HashMap<String,Object>> pager = new Pager<>(pageNum, pageSize, metricsInfo.size());
+        int startIndex = pager.getStartIndex();
+        int totalCount = metricsInfo.size();
+        for(int i=startIndex; i<startIndex+pageSize && i<totalCount; i++) {
+            pager.getData().add(metricsInfo.get(i));
+        }
+        this.resultdata.put("paged_result", pager);
+        return this.resultdata;
+    }
     //taskService的操作
     public void ensureNotLogin() {
         packageError("用户尚未登陆,无法进行此操作!");

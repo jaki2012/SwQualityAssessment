@@ -47,5 +47,6 @@
         <property name="NUM_OPERATORS"/>
         <property name="NUM_UNIQUE_OPERANDS"/>
         <property name="NUM_UNIQUE_OPERATORS"/>
+        <property name="taskID"/>
     </class>
 </hibernate-mapping>

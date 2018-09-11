@@ -1,5 +1,7 @@
 package com.tongji409.website.dao;
 
+import com.tongji409.domain.Metrics;
+import com.tongji409.website.vo.MetricsInfo;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
@@ -18,6 +20,11 @@ public interface TaskDao extends BaseDao {
 
     SessionFactory makeNewSession();
 
+    List<Task> getTasksByUserId(int userId);
+
+    Task getTaskById(int taskId);
+
+    List<Object[]> getMetricsInfoById(int taskId);
 
 
 //    public List<Task> getAllUser() {

@@ -28,7 +28,9 @@ import java.util.zip.ZipInputStream;
 @ComponentScan
 public class FileSystemService extends ServiceSupport {
 
-    private String serverFileRootPath = "/Users/lijiechu/tmptest/";
+//    private String serverFileRootPath = "/Users/lijiechu/tmptest/";
+    private String serverFileRootPath = "/root/workspace/temp/";
+
 
     public String getServerFileRootPath() {
         return serverFileRootPath;
