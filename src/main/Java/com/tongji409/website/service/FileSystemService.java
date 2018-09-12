@@ -82,7 +82,8 @@ public class FileSystemService extends ServiceSupport {
             FileUtils.copyToFile(connection.getInputStream(), saveFile);
         } catch (IOException e) {
             saveFile.delete();
-            packageError("项目下载失败，请重试");
+            // 解决空指针问题
+//            packageError("项目下载失败，请重试");
             return false;
         }
         // Java NIO
